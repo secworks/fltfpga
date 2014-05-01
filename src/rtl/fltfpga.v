@@ -43,6 +43,11 @@ module fltfpga(
                // Clock and reset.
                input wire           clk,
                input wire           reset_n,
+
+               // Board I2C interface.
+               output wire           hdmi_i2c_clk,
+               input wire            hdmi_i2c_data_in,
+               output wire           hdmi_i2c_data_out,
                
                // HDMI interface.
                input wire            hdmi_tx_int,
@@ -52,19 +57,19 @@ module fltfpga(
                output wire           hdmi_tx_vsync,
                output wire           hdmi_tx_hsync,
                output wire           hdmi_tx_de,
-               output wire           hdmi_i2c_clk,
-               input wire            hdmi_i2c_data,
-
 
                // AC97 interface.
                
                // LED interface.
                output wire [7 : 0]   led,
 
-
                // button interface.
+               input wire            button0,
+               input wire            button1,
 
                // USB-UART interface.
+               input wire          uart_rxd,
+               output wire         uart_txd
               );
 
   
