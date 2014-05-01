@@ -45,6 +45,16 @@ module fltfpga(
                input wire           reset_n,
                
                // HDMI interface.
+               input wire            hdmi_tx_int,
+               output wire [23 : 0]  hdmi_tdx,
+               output wire           hdmi_tx_clk,
+               output wire           hdmi_tx_data_en,
+               output wire           hdmi_tx_vsync,
+               output wire           hdmi_tx_hsync,
+               output wire           hdmi_tx_de,
+               output wire           hdmi_i2c_clk,
+               input wire            hdmi_i2c_data,
+
 
                // AC97 interface.
                
