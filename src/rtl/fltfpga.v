@@ -59,8 +59,10 @@ module fltfpga(
                // AC97 interface.
                
                // LED interface.
+               output wire [7 : 0]   led,
 
-               // GPIO interface.
+
+               // button interface.
 
                // USB-UART interface.
               );
