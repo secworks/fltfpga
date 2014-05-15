@@ -58,6 +58,12 @@ module fltfpga(
                output wire           hdmi_tx_hsync,
                output wire           hdmi_tx_de,
 
+               // I2C interface
+               input wire           scl_in,
+               output wire          scl_out,
+               input wire           sda_in,
+               output wire          sda_out,
+
                // AC97 interface.
                
                // LED interface.
@@ -76,6 +82,8 @@ module fltfpga(
   //----------------------------------------------------------------
   // Internal constant and parameter definitions.
   //----------------------------------------------------------------
+  parameter AUDIO_I2C_ADDR = 8'h42;
+  parameter HDMI_I2C_ADDR  = 8'h43;
 
   
   //----------------------------------------------------------------
