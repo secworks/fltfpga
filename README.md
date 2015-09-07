@@ -35,6 +35,11 @@ The following components will probably be needed
 
 - External interface. At least a UART for external communication.
 
+The CPU talks to the other parts as master-slaves. The GPU and DSP are
+expected to have their own memories which they control, albeit they are
+(might be) mapped into the CPU address space. This means that the CPU
+will be able to read and write into the screen memory not being dispayed.
+
 
 ## Implementation details ##
 The development board we are targeting:
