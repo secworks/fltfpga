@@ -9,6 +9,32 @@ enable use of the HDMI video and AC97 audio interfaces om ther TerasIC
 FPGA development board. The purpose of this is to be able to implement
 cool demo effects in HW for the benefit of entertainment.
 
+The fltfpga system will contain a CPU a GPU, a DSP/sound engine and a
+few peripherals as needed to implement cool demos.
+
+The CPU, GPU and the rest of the system are developed separately, but
+are all part of the repo.
+
+
+## System Description ##
+
+The following components will probably be needed
+- CPU. Executing code as needed to control all other components, do
+  processing etc.
+
+- GPU. Something like the GFX sub system in the Amiga and the
+  C64. Support for 1024x768 with double buffering. Simple macro based
+  (copper list) DMA functionality for fast movement. At least 64
+  sprites. Text mode overlay. Raster counter to allow CPU to play around
+  with effects.
+
+- DSP/Sound. 16-32 voices with sample and synthesis based sound. Mixing
+  and master volune. Filters. With sweeps.
+
+- Timers and IRQ.
+
+- External interface. At least a UART for external communication.
+
 
 ## Implementation details ##
 The development board we are targeting:
@@ -34,8 +60,19 @@ is connected to pins on the Cyclone V GX FPGA. Info about the chip:
 
 
 ## Status ##
-(2014-04-30)
+*** (2015-09-07) ***
+
+Started writing API for the CPU. The target right now is a simple 32-bit
+CPU with shared code and data memory designed to allow self modifying
+code and other fun things. The design is influenced by MIPS R3000 as
+well as MOS 6502 and other CPUs. A bastard basically.
+
+Not sure that the design will be using the HDMI and AC97/Audio interface
+on the board, but instead use a simpler design with basically a VGA or
+DVI output chip and a simpler sound chip that just includes DAC and
+linear amplifier.
+
+
+*** (2014-04-30) ***
 
 Project has just been started.
-
-
