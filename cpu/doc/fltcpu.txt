@@ -28,13 +28,13 @@ Register map
 ------------
 32 registers
 
-r00: zero register
+r00: user reg 01
 r01: user reg 01
 ...
 r28: user reg 28
-r29: return address
-r30: program counter
-r31: status register (zero, carry, ...)
+r29: status register (zero, carry, ...)
+r30: return address
+r31: program counter
 
 
 Instruction types
