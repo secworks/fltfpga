@@ -53,6 +53,9 @@ module fltcpu_alu(
                   output wire          mem_we,
                   output wire [31 : 0] mem_addr,
 
+                  output wire          eq_data,
+                  output wire          eq_we,
+
                   output wire          dst_we,
                   output wire [4 : 0]  dst_addr,
                   output wire [31 : 0] dst_data,
@@ -89,6 +92,10 @@ module fltcpu_alu(
   // Wires.
   //----------------------------------------------------------------
   reg [31 : 0] tmp_dst_data;
+  reg          tmp_dst_we;
+
+  reg          tmp_eq_data;
+  reg          tmp_eq_we;
 
 
   //----------------------------------------------------------------
