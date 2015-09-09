@@ -76,12 +76,12 @@ module fltcpu(
   //----------------------------------------------------------------
   // Wires.
   //----------------------------------------------------------------
-  wire [5 : 0] opcode;
-  wire [4 : 0] dest_addr;
-  wire [4 : 0] source0_addr;
-  wire [4 : 0] source1_addr;
-  wire [4 : 0] shamt;
-  wire [4 : 0] immediate;
+  wire [5 : 0]  opcode;
+  wire [4 : 0]  dest_addr;
+  wire [4 : 0]  source0_addr;
+  wire [4 : 0]  source1_addr;
+  wire [4 : 0]  shamt;
+  wire [15 : 0] immediate;
 
 
   //----------------------------------------------------------------
