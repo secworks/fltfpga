@@ -4,6 +4,14 @@
 // --------
 // Top level file of the fltfpga cpu.
 //
+// Instruction format:
+// [31 : 26] 6 bit opcode.
+// [25 : 21] 5 bit destination reg if present.
+// [20 : 16] 5 bit source reg 0 if present
+// [15 : 11] 5 bit source reg 1 if present
+//           5 bit shift amount if present
+// [15 : 0]  16 bit immediate if present
+//
 //
 // Author: Joachim Strombergson
 // Copyright (c) 2015 Secworks Sweden AB
@@ -66,12 +74,30 @@ module fltcpu(
 
 
   //----------------------------------------------------------------
+  // Wires.
+  //----------------------------------------------------------------
+  wire [5 : 0] opcode;
+  wire [4 : 0] dest_addr;
+  wire [4 : 0] source0_addr;
+  wire [4 : 0] source1_addr;
+  wire [4 : 0] shamt;
+  wire [4 : 0] immediate;
+
+
+  //----------------------------------------------------------------
   // Concurrent connectivity for ports etc.
   //----------------------------------------------------------------
-  assign mem_cs = 0;
-  assign mem_we = 0;
+  assign mem_cs      = 0;
+  assign mem_we      = 0;
   assign mem_address = 32'h00000000;
   assign mem_data    = 32'h00000000;
+
+  assign opcode       = instruction_reg[31 : 26];
+  assign dest_addr    = instruction_reg[25 : 21];
+  assign source0_addr = instruction_reg[20 : 16];
+  assign source1_addr = instruction_reg[15 : 11];
+  assign shamt        = instruction_reg[15 : 11];
+  assign immediate    = instruction_reg[15 : 00];
 
 
   //----------------------------------------------------------------
@@ -96,18 +122,6 @@ module fltcpu(
             fltcpu_ctrl_reg <= fltcpu_ctrl_new;
         end
     end // reg_update
-
-
-  //----------------------------------------------------------------
-  // instruction_decoder
-  //
-  // Combinational decoder of the instruction. Basically extract
-  // possible fields from the instruction register and trigger
-  // some control signals.
-  //----------------------------------------------------------------
-  always @*
-    begin : instruction_decoder
-    end // instruction_decoder
 
 
   //----------------------------------------------------------------
