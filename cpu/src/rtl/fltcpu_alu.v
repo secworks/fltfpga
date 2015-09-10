@@ -97,11 +97,14 @@ module fltcpu_alu(
   reg          tmp_eq_data;
   reg          tmp_eq_we;
 
+  wire [4 : 0] shamt;
+
 
   //----------------------------------------------------------------
   // Concurrent connectivity for ports etc.
   //----------------------------------------------------------------
-  dst_data = tmp_dst_data;
+  assign dst_data = tmp_dst_data;
+  assign shamt    = src1_data[4 : 0];
 
 
   //----------------------------------------------------------------

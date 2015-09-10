@@ -98,6 +98,7 @@ module fltcpu(
   assign constant     = instruction_reg[15 : 00];
 
 
+
   //----------------------------------------------------------------
   // reg_update
   // Update functionality for all registers in the core.
@@ -121,6 +122,18 @@ module fltcpu(
         end
     end // reg_update
 
+
+  //----------------------------------------------------------------
+  // select_operands
+  //
+  // Select the operands used during operations. This mainly
+  // relates to source1 since it will be replaced by a zero
+  // extended constant for operations that uses them.
+  //----------------------------------------------------------------
+  always @*
+    begin : select_operands
+
+    end // select_operands
 
   //----------------------------------------------------------------
   // fltcpu_ctrl
