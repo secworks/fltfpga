@@ -80,8 +80,7 @@ module fltcpu(
   wire [4 : 0]  dest_addr;
   wire [4 : 0]  source0_addr;
   wire [4 : 0]  source1_addr;
-  wire [4 : 0]  shamt;
-  wire [15 : 0] immediate;
+  wire [15 : 0] constant;
 
 
   //----------------------------------------------------------------
@@ -96,8 +95,7 @@ module fltcpu(
   assign dest_addr    = instruction_reg[25 : 21];
   assign source0_addr = instruction_reg[20 : 16];
   assign source1_addr = instruction_reg[15 : 11];
-  assign shamt        = instruction_reg[15 : 11];
-  assign immediate    = instruction_reg[15 : 00];
+  assign constant     = instruction_reg[15 : 00];
 
 
   //----------------------------------------------------------------
