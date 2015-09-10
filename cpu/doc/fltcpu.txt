@@ -55,19 +55,42 @@ reg, imm -> reg operations
 
 Instruction Set
 ---------------
-AND  - AND two registers, store result in register
-OR   - Inclusive OR two regisrers, store in register
-XOR  - Exclusive OR two registers, store in register
-NOT  - Inverse register, store in register
+AND  - AND src0 and src1, store result in dst.
 
-ADD  - Add two registersm stor in register
-ADDI - Add register and constant, stor in register
+OR   - Inclusive OR src0 and src1, store result in dst.
+
+XOR  - Exclusive OR src0 and src1, store in dst.
+
+NOT  - Inverse src0, store in dst.
+
+ADD  - Add src0 and src1, store in dst.
+ADDI - Add src0 and constant, store in dst.
 
 SUB  - Substract one register from register, store in register
 SUBI - Subtract constant from register, store in register
 
 MUL  - Multiply two registers, store in register
 MULI - Multiply register with constant, store in register
+
+ASL  - Arithmetic shift left of contents of src0 with number of bits
+       given by src1. Store result in dst register.
+ASLI - Arithmetic shift left of contents of src0 with number of bits
+       given by constant. Store result in dst register.
+
+ASR  - Arithmetic shift right of contents of src0 with number of bits
+       given by src1. Store result in dst register.
+ASRI - Arithmetic shift right of contents of src0 with number of bits
+       given by constant. Store result in dst register.
+
+ROL  - Rotate left of contents of src0 with number of bits
+       given by src1. Store result in dst register.
+ROLI - Rotate left of contents of src0 with number of bits
+       given by constant. Store result in dst register.
+
+ROR  - Rotate right of contents of src0 with number of bits
+       given by src1. Store result in dst register.
+RORI - Rotate right of contents of src0 with number of bits
+       given by constant. Store result in dst register.
 
 RD   - Read from address given by register, store in register
 RDI  - Read from constant address, store in register
