@@ -135,8 +135,9 @@ In total: 32 instructions.
 
 
 ## TODO ##
-Interrupt support
-Boot
+- Instruction opcode encoding.
+- Interrupt support
+- Boot
 
 
 ## Functions to consider ##
