@@ -14,16 +14,13 @@ The first version of the machine will only support integer arithmetic.
 
 
 ## Architecture ##
-TBW.
-
-
-## Main requirements ##
-Endianness:    Big endian, 32-bit data words.
-Address space: At least 24 bits. Word oriented.
-Register:      32 or 64 registers, 32 bit wide
-Opcodes:       Max 64.
-Instructions:  Always a single word (32 bits)
-Status:        Separate register.
+- Endianness:    Big endian, 32-bit data words.
+- Address space: At least 24 bits. Word oriented.
+- Registers:     32 or 64 registers, 32 bits wide.
+- Opcodes:       Max 64 opcodes.
+- Instructions:  Always a single word (32 bits)
+- Execution:     Single scalar, in order and variable number of cycles.
+- Status:        Separate register.
 
 
 ## Register map ##
