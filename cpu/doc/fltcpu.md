@@ -54,62 +54,80 @@ reg, imm -> reg operations
 
 | opcode   | Mnemonic   | Description   | Registers   | Flags   |
 |:--------:|:----------:|-------------------------------------------|:-----------:|:-------:|
-| 0x00     | BRK        | Break. Do nothing and do not increase PC. |||
+| 0x00     | BRK        | Break. Do nothing and do not increase PC.   |||
+|          |            |     |||
+| 0x00     | AND        | AND src0 and src1, store result in dst.   |||
+| 0x00     | OR         | Inclusive OR src0 and src1, store result in dst.   |||
+| 0x00     | XOR        | Exclusive OR src0 and src1, store in dst.   |||
+| 0x00     | NOT        | Inverse src0, store in dst.    |||
+|          |            |     |||
+| 0x00     | ADD        | Add src0 and src1, store in dst.   |||
+| 0x00     | ADDI       | Add src0 and constant, store in dst.   |||
+| 0x00     | SUB        | Substract one register from register, store in register   |||
+| 0x00     | SUBI       | Subtract constant from register, store in register   |||
+| 0x00     | MUL        | Multiply two registers, store in register   |||
+| 0x00     | MULI       | Multiply register with constant, store in register   |||
 
-AND  - AND src0 and src1, store result in dst.
+| 0x00     | ASL        | Arithmetic shift left of contents of src0 with number of bits given by src1. Store result in dst register.   |||
+| 0x00     | ASLI       | Arithmetic shift left of contents of src0 with number of bits given by constant. Store result in dst register.   |||
 
-OR   - Inclusive OR src0 and src1, store result in dst.
-
-XOR  - Exclusive OR src0 and src1, store in dst.
-
-NOT  - Inverse src0, store in dst.
-
-ADD  - Add src0 and src1, store in dst.
-ADDI - Add src0 and constant, store in dst.
-
-SUB  - Substract one register from register, store in register
-SUBI - Subtract constant from register, store in register
-
-MUL  - Multiply two registers, store in register
-MULI - Multiply register with constant, store in register
-
-ASL  - Arithmetic shift left of contents of src0 with number of bits
-       given by src1. Store result in dst register.
-ASLI - Arithmetic shift left of contents of src0 with number of bits
-       given by constant. Store result in dst register.
-
+| 0x00     |
 ASR  - Arithmetic shift right of contents of src0 with number of bits
        given by src1. Store result in dst register.
+| 0x00     |
 ASRI - Arithmetic shift right of contents of src0 with number of bits
        given by constant. Store result in dst register.
 
+| 0x00     |
 ROL  - Rotate left of contents of src0 with number of bits
        given by src1. Store result in dst register.
+| 0x00     |
 ROLI - Rotate left of contents of src0 with number of bits
        given by constant. Store result in dst register.
 
+| 0x00     |
 ROR  - Rotate right of contents of src0 with number of bits
        given by src1. Store result in dst register.
+| 0x00     |
 RORI - Rotate right of contents of src0 with number of bits
        given by constant. Store result in dst register.
 
+|          |            |     |||
+
+| 0x00     |
 RD   - Read from address given by register, store in register
+| 0x00     |
 RDI  - Read from constant address, store in register
 
+| 0x00     |
 WR   - Write contents of register to address given by register
+| 0x00     |
 WRI  - Write contents of register to constant address
 
+|          |            |     |||
+
+| 0x00     |
 CMP  - Compare contents of src0 with src1. Update eq flag.
+| 0x00     |
 CMPI - Compare contents of register with constant.
 
+|          |            |     |||
+
+| 0x00     |
 BEQ  - Branch to address given by register if eq flag is set
+| 0x00     |
 BEQI - Branch to address given by constant if eq flag is set
 
+| 0x00     |
 BNE  - Branch to address given by register if eq flag is not set
+| 0x00     |
 BNEI - Branch to address given by constant if eq flag is not set
 
+| 0x00     |
 JSR  - Jump to address given by register, store PC in return address
+| 0x00     |
 JMP  - Jump to address given by register
+| 0x00     |
 JMPI - Jump to address given by constant
 
 
