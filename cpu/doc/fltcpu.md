@@ -53,8 +53,12 @@ reg, imm -> reg operations
 
 
 
-Instruction Set
----------------
+## Instruction Set ##
+
+| opcode   | Mnemonic   | Description   | Registers   | Flags   |
+|:--------:|:----------:|-------------------------------------------|:-----------:|:-------:|
+| 0x00     | BRK        | Break. Do nothing and do not increase PC. |||
+
 AND  - AND src0 and src1, store result in dst.
 
 OR   - Inclusive OR src0 and src1, store result in dst.
@@ -98,8 +102,8 @@ RDI  - Read from constant address, store in register
 WR   - Write contents of register to address given by register
 WRI  - Write contents of register to constant address
 
-CMP  - Compare contents of register with register
-CMPI - Comparre contents of register with constant
+CMP  - Compare contents of src0 with src1. Update eq flag.
+CMPI - Compare contents of register with constant.
 
 BEQ  - Branch to address given by register if eq flag is set
 BEQI - Branch to address given by constant if eq flag is set
@@ -111,10 +115,10 @@ JSR  - Jump to address given by register, store PC in return address
 JMP  - Jump to address given by register
 JMPI - Jump to address given by constant
 
-Right now 23 instructions.
+
+In total: 32 instructions.
 
 
-TODO
 ----
 Interrupthantering
 Boot
