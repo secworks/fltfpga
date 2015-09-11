@@ -152,16 +152,15 @@ In total: 32 instructions.
 
 
 ## Test/Exempel ##
-ADDI r01, r01, 0xdead - 5 + 8 + 16  = 29 bitar
-ADDI r01, r01, 0xdead - 6 + 8 + 16  = 30 bitar (6 bit opkod)
-ADDI r01, r01, 0xdead - 6 + 10 + 16 = 32 bitar (6 bit opkod, 5 bit regadress)
+- ADDI r01, r01, 0xdead - 5 + 8 + 16  = 29 bitar
+- ADDI r01, r01, 0xdead - 6 + 8 + 16  = 30 bitar (6 bit opkod)
+- ADDI r01, r01, 0xdead - 6 + 10 + 16 = 32 bitar (6 bit opkod, 5 bit regadress)
 
-6 bit opcode, 6 bit src0, 6 bit src 1, 4 bit dst = 21 bit. 32 - 21 = 11
-6 bit opcode, 5 bit src0, 5 bit dst, 16 bit immediate - 32 bit. Good!
-6 bit opcode, 5 bit src0, 21 bit immediate
-6 bit opcode, 5 bit dst,  21 bit immediate
+- 6 bit opcode, 6 bit src0, 6 bit src 1, 4 bit dst = 21 bit. 32 - 21 = 11
+- 6 bit opcode, 5 bit src0, 5 bit dst, 16 bit immediate - 32 bit. Good!
+- 6 bit opcode, 5 bit src0, 21 bit immediate
+- 6 bit opcode, 5 bit dst,  21 bit immediate
 
-
-6 bit opcode, 6 bit src0, 6 bit src 1, 4 bit dst = 21 bit. 32 - 21 = 11
-5 bit opcode, 4 bit src0, 4 bit dst, 16 bit immediate - 32 bit. Good!
-5 bit opcode, 4 bit src0, 23 bit immediate
+- 6 bit opcode, 6 bit src0, 6 bit src 1, 4 bit dst = 21 bit. 32 - 21 = 11
+- 5 bit opcode, 4 bit src0, 4 bit dst, 16 bit immediate - 32 bit. Good!
+- 5 bit opcode, 4 bit src0, 23 bit immediate
