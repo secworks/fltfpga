@@ -1,7 +1,6 @@
 FLTCPU
 ======
-Introduction
-------------
+## Introduction ##
 The fltfpga CPU is a simple RISC processor core. We could have used an
 ARM clone, OpenRISC or a number of different CPU cores. But what is the
 fun with that?
@@ -14,8 +13,11 @@ is memory mapped too.
 The first version of the machine will only support integer arithmetic.
 
 
-Main requirements
------------------
+## Architecture ##
+TBW.
+
+
+## Main requirements ##
 Endianness:    Big endian, 32-bit data words.
 Address space: At least 24 bits. Word oriented.
 Register:      32 or 64 registers, 32 bit wide
@@ -24,8 +26,7 @@ Instructions:  Always a single word (32 bits)
 Status:        Separate register.
 
 
-Register map
-------------
+## Register map ##
 32 registers
 
 r00: user reg 01
@@ -37,8 +38,7 @@ r30: return address
 r31: program counter
 
 
-Instruction types
------------------
+## Instruction types ##
 reg, reg -> reg operations
 (AND, OR, XOR, ADD, SUB, MUL)
 5 bit opcode, 4 bit src0, 4 bit src1, 4 bit dst, x extra = 5 + 12 = 17 + x bits
@@ -119,13 +119,12 @@ JMPI - Jump to address given by constant
 In total: 32 instructions.
 
 
-----
-Interrupthantering
+## TODO ##
+Interrupt support
 Boot
 
 
-Functions to consider:
-----------------------
+## Functions to consider ##
 - Autoindex, Auto increment of registers
 - DMA
 - DSP, MAC
@@ -136,11 +135,10 @@ Functions to consider:
 - Implicit pc stack
 
 
-Test/Exempel
-------------
-    ADDI r01, r01, 0xdead - 5 + 8 + 16  = 29 bitar
-    ADDI r01, r01, 0xdead - 6 + 8 + 16  = 30 bitar (6 bit opkod)
-    ADDI r01, r01, 0xdead - 6 + 10 + 16 = 32 bitar (6 bit opkod, 5 bit regadress)
+## Test/Exempel ##
+ADDI r01, r01, 0xdead - 5 + 8 + 16  = 29 bitar
+ADDI r01, r01, 0xdead - 6 + 8 + 16  = 30 bitar (6 bit opkod)
+ADDI r01, r01, 0xdead - 6 + 10 + 16 = 32 bitar (6 bit opkod, 5 bit regadress)
 
 6 bit opcode, 6 bit src0, 6 bit src 1, 4 bit dst = 21 bit. 32 - 21 = 11
 6 bit opcode, 5 bit src0, 5 bit dst, 16 bit immediate - 32 bit. Good!
