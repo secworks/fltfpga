@@ -8,7 +8,9 @@ fun with that?
 Anyway, the CPU is a 32-bit CPU with a very limited instruction set. The
 machines has a shared code and data memory to allow dymanic/self
 modifying code, use data as code and other fun things. I/O including
-is memory mapped too.
+is memory mapped too. Oh and the program counter (PC) is of course a
+normal register so one can manipulate the PC from SW. Running code
+backwards? Should be doable.
 
 The first version of the machine will only support integer arithmetic.
 
