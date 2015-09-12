@@ -26,15 +26,12 @@ The first version of the machine will only support integer arithmetic.
 
 
 ## Register map ##
-32 registers
+32 registers in total. All registers are directly writeable by SW. This means that one can easily jump, change status regs, manipulate return addresses.
 
-r00: user reg 00
-r01: user reg 01
-...
-r28: user reg 28
-r29: status register (zero, carry, ...)
-r30: return address
-r31: program counter
+- r00..r28: General registers.
+- r29: status register (zero, carry, equal etc...) Not a complete register. Only the specified bits are actually there.
+- r30: return address
+- r31: program counter
 
 
 ## Instruction types and structure ##
