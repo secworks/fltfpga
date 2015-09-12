@@ -20,7 +20,7 @@ are all part of the repo.
 
 The following components will probably be needed
 - CPU. Executing code as needed to control all other components, do
-  processing etc.
+  processing etc. Read [more about the CPU here](cpu/doc/README.md)
 
 - GPU. Something like the GFX sub system in the Amiga and the
   C64. Support for 1024x768 with double buffering. Simple macro based
