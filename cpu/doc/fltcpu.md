@@ -84,9 +84,9 @@ Where in the instruction the fields are:
 | 0x17     | RORI       | Rotate right of contents of src0 with number of bits given by constant. Store result in dst register.   |||
 |          |            ||||
 | 0x20     | RD         | Read from address given by register, store in register |||
-| 0x21     | RDI        | Read from constant address, store in register |||
+| 0x21     | RDI        | Read from constant address added with src0, store in register |||
 | 0x22     | WR         | Write contents of register to address given by register |||
-| 0x23     | WRI        | Write contents of register to constant address. |||
+| 0x23     | WRI        | Write contents of register to constant address added with src0 |||
 |          |            ||||
 | 0x30     | CMP        | Compare contents of src0 with src1. Update eq flag.   |||
 | 0x31     | CMPI       | Compare contents of register with constant.   |||
@@ -94,10 +94,11 @@ Where in the instruction the fields are:
 | 0x33     | BEQI       | Branch to address given by constant if eq flag is set   |||
 
 | 0x38     | BNE        | Branch to address given by register if eq flag is not set   |||
-| 0x38     | BNEI       | Branch to address given by constant if eq flag is not set   |||
+| 0x39     | BNEI       | Branch to address given by constant if eq flag is not set   |||
 | 0x3a     | JSR        | Jump to address given by register, store PC in return address   |||
 | 0x3b     | JMP        | Jump to address given by register   |||
-| 0x3c     | JMPI       | Jump to address given by constant   |||
+| 0x3c     | JMPI       | Jump to address given by constant and src0 |||
+| 0x3f     | RTS        | Return from subroutine using stored return address   |||
 
 
 In total: 32 instructions.
