@@ -52,7 +52,8 @@ module fltcpu(
               output wire          mem_cs
               output wire          mem_we
               output wire [31 : 0] mem_address,
-              output wire [31 : 0] mem_data
+              input wire [31 : 0]  mem_read_data
+              output wire [31 : 0] mem_write_data
              );
 
 
@@ -142,22 +143,11 @@ module fltcpu(
 
                  .opcode(opcode),
 
-                 .src0_addr(),
                  .src0_data(source0_data),
+                 .src1_data(source1_data),
+                 .dst_data(dest_data),
 
-                 .src1_addr(),
-                 .src1_data(),
-
-                 .mem_cs(),
-                 .mem_we(),
-                 .mem_addr(),
-
-                 .eq_data(),
-                 .eq_we(),
-
-                 .dst_we(),
-                 .dst_addr(),
-                 .dst_data(),
+                 .eq_data(eq_data)
                 );
 
 
@@ -177,12 +167,30 @@ module fltcpu(
       else
         begin
           if (instruction_we)
-            instruction_reg <= mem_data;
+            instruction_reg <= mem_read_data;
 
           if (fltcpu_ctrl_we)
             fltcpu_ctrl_reg <= fltcpu_ctrl_new;
         end
     end // reg_update
+
+
+  //----------------------------------------------------------------
+  // mem_access
+  //
+  // Memory access mux.
+  //----------------------------------------------------------------
+  always @*
+    begin : mem_access
+      if (mem_instruction)
+        begin
+
+        end
+      else
+        begin
+
+          end
+    end // mem_access
 
 
   //----------------------------------------------------------------
@@ -197,6 +205,7 @@ module fltcpu(
 
     end // select_operands
 
+
   //----------------------------------------------------------------
   // fltcpu_ctrl
   //
@@ -204,6 +213,10 @@ module fltcpu(
   //----------------------------------------------------------------
   always @*
     begin : fltcpu_ctrl
+      instruction_we  = 0;
+      inc_pc          = 0;
+      ret_pc          = 0;
+
       fltcpu_ctrl_new = FLTCPU_IDLE;
       fltcpu_ctrl_we  = 0;
 

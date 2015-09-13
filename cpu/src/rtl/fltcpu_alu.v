@@ -43,22 +43,11 @@ module fltcpu_alu(
 
                   input wire [5 : 0]   opcode,
 
-                  input wire [4 : 0]   src0_addr,
                   input wire [31 : 0]  src0_data,
-
-                  input wire [4 : 0]   src1_addr,
                   input wire [31 : 0]  src1_data,
-
-                  output wire          mem_cs,
-                  output wire          mem_we,
-                  output wire [31 : 0] mem_addr,
-
-                  output wire          eq_data,
-                  output wire          eq_we,
-
-                  output wire          dst_we,
-                  output wire [4 : 0]  dst_addr,
                   output wire [31 : 0] dst_data,
+
+                  output wire          eq_data
                  );
 
 
