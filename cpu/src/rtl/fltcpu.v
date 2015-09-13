@@ -77,10 +77,24 @@ module fltcpu(
   // Wires.
   //----------------------------------------------------------------
   wire [5 : 0]  opcode;
+
   wire [4 : 0]  dest_addr;
+  wire [31 : 0] dest_data;
+  reg           dest_we;
+
   wire [4 : 0]  source0_addr;
+  wire [31 : 0] source0_data;
+
   wire [4 : 0]  source1_addr;
+  wire [31 : 0] source1_data;
+
   wire [15 : 0] constant;
+
+  reg           inc_pc;
+  reg           ret_pc;
+  wire [31 : 0] pc;
+
+  wire          zero_flag;
 
 
   //----------------------------------------------------------------
@@ -97,6 +111,54 @@ module fltcpu(
   assign source1_addr = instruction_reg[15 : 11];
   assign constant     = instruction_reg[15 : 00];
 
+
+  //----------------------------------------------------------------
+  // Instantiations.
+  //----------------------------------------------------------------
+  fltcpu_regfile regfile(
+                         .clk(clk),
+                         .reset_n(reset_n),
+
+                         .src0_addr(source0_addr),
+                         .src0_data(source0_data),
+
+                         .src1_addr(source1_addr),
+                         .src1_data(source1_data),
+
+                         .dst_we(dest_we),
+                         .dst_addr(dest_addr),
+                         .dst_data(dest_data),
+
+                         .zero_flag(zero_flag),
+
+                         .inc(inc_pc),
+                         .return(ret_pc),
+                         .pc(pc)
+                        );
+
+  fltcpu_alu alu(
+                 .clk(clk),
+                 .reset_n(reset_n),
+
+                 .opcode(opcode),
+
+                 .src0_addr(),
+                 .src0_data(source0_data),
+
+                 .src1_addr(),
+                 .src1_data(),
+
+                 .mem_cs(),
+                 .mem_we(),
+                 .mem_addr(),
+
+                 .eq_data(),
+                 .eq_we(),
+
+                 .dst_we(),
+                 .dst_addr(),
+                 .dst_data(),
+                );
 
 
   //----------------------------------------------------------------

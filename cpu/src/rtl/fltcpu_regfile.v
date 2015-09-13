@@ -57,7 +57,7 @@ module fltcpu_regfile(
                       output wire          zero_flag,
 
                       // Program counter.
-                      input                update,
+                      input                inc,
                       input wire           return,
                       output wire [31 : 0] pc
                      );
@@ -226,7 +226,7 @@ module fltcpu_regfile(
           pc_we  = 1;
         end
 
-      else if (update)
+      else if (inc)
         begin
           pc_new = pc_reg + 1'b1;
           pc_we  = 1;
