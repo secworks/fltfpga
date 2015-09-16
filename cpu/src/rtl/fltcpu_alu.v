@@ -45,8 +45,8 @@ module fltcpu_alu(
 
                   input wire [31 : 0]  src0_data,
                   input wire [31 : 0]  src1_data,
-                  output wire [31 : 0] dst_data,
 
+                  output wire [31 : 0] dst_data,
                   output wire          eq_data
                  );
 
@@ -54,8 +54,6 @@ module fltcpu_alu(
   //----------------------------------------------------------------
   // Internal constant and parameter definitions.
   //----------------------------------------------------------------
-  localparam OPCODE_BRK = 6'h00;
-
   localparam OPCODE_AND = 6'h01;
   localparam OPCODE_OR  = 6'h02;
   localparam OPCODE_XOR = 6'h03;
@@ -63,6 +61,7 @@ module fltcpu_alu(
 
   localparam OPCODE_ADD = 6'h08;
   localparam OPCODE_SUB = 6'h09;
+  localparam OPCODE_MUL = 6'h0c;
 
   localparam OPCODE_ASL = 6'h10;
   localparam OPCODE_ROL = 6'h11;
@@ -73,19 +72,10 @@ module fltcpu_alu(
 
 
   //----------------------------------------------------------------
-  // Registers including update variables and write enable.
-  //----------------------------------------------------------------
-
-
-  //----------------------------------------------------------------
   // Wires.
   //----------------------------------------------------------------
   reg [31 : 0] tmp_dst_data;
-  reg          tmp_dst_we;
-
   reg          tmp_eq_data;
-  reg          tmp_eq_we;
-
   wire [4 : 0] shamt;
 
 
@@ -93,6 +83,7 @@ module fltcpu_alu(
   // Concurrent connectivity for ports etc.
   //----------------------------------------------------------------
   assign dst_data = tmp_dst_data;
+  assign eq_data  = tmp_eq_data;
   assign shamt    = src1_data[4 : 0];
 
 
@@ -105,10 +96,9 @@ module fltcpu_alu(
     begin : alu
       // Default assignments
       tmp_dst_data = 32'h00000000;
+      tmp_eq_data  = 0;
 
       case (opcode)
-        OPCODE_BRK:
-
         OPCODE_AND:
           tmp_dst_data = src0_data && src1_data;
 
@@ -127,20 +117,25 @@ module fltcpu_alu(
         OPCODE_SUB:
           tmp_dst_data = src0_data - src1_data;
 
+        OPCODE_MUL:
+          tmp_dst_data = src0_data * src1_data;
+
         OPCODE_ASL:
-          tmp_dst_data = 32'h00000000;
+          tmp_dst_data = src0_data <<< shamt;
 
         OPCODE_ROL:
-          tmp_dst_data = 32'h00000000;
+          tmp_dst_data = {(src0_data <<< shamt),
+                          (src0_data >>> (32 - shamt))};
 
         OPCODE_ASR:
-          tmp_dst_data = 32'h00000000;
+          tmp_dst_data = src0_data >>> shamt;
 
         OPCODE_ROR:
-          tmp_dst_data = 32'h00000000;
+          tmp_dst_data = {(src0_data >>> shamt),
+                          (src0_data <<< (32 - shamt))};
 
         OPCODE_CMP:
-          tmp_dst_data = 32'h00000000;
+          eq_data = src0_data == src1_data;
 
         default:
           begin
