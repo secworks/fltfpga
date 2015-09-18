@@ -72,7 +72,7 @@ module fltcpu_regfile(
   //----------------------------------------------------------------
   // Registers including update variables and write enable.
   //----------------------------------------------------------------
-  reg [31 : 0] gp_reg [0 : 28];
+  reg [31 : 0] gp_reg [0 : 29];
   reg          gp_we;
 
   reg [31 : 0] status_reg;
@@ -139,8 +139,7 @@ module fltcpu_regfile(
           gp_reg[26] <= 32'h00000000;
           gp_reg[27] <= 32'h00000000;
           gp_reg[28] <= 32'h00000000;
-
-          status_reg <= 32'h00000000;
+          gp_reg[29] <= 32'h00000000;
           return_reg <= 32'h00000000;
           pc_reg     <= BOOT_VECTOR;
         end
@@ -201,17 +200,24 @@ module fltcpu_regfile(
 
 
   //----------------------------------------------------------------
-  // pc_update
+  // update_ctrl
   //
-  // Update logic for the program counter. The update supports
-  // direct writes to the PC (i.e. jumps), return and simple
-  // increments.
+  // Update logic for the registers including the return register
+  // and the program counter. The update supports direct writes to
+  // the PC (i.e. jumps), return and simple increments.
   //----------------------------------------------------------------
   always @*
     begin : pc_update
       return_we = 0;
+      gp_we     = 0;
       pc_new    = 32'h00000000
       pc_we     = 0;
+
+      if (dst_we && (dst_addr < 30))
+          gp_we = 1;
+
+      if (dst_we && (dst_addr == 30))
+          return_we = 1;
 
       if (dst_we && (dst_addr == 31))
         begin
@@ -219,20 +225,17 @@ module fltcpu_regfile(
           pc_new    = dst_data;
           pc_we     = 1;
         end
-
       else if (return)
         begin
           pc_new = return_reg;
           pc_we  = 1;
         end
-
       else if (inc)
         begin
           pc_new = pc_reg + 4;
           pc_we  = 1;
         end
-    end // pc_update
-
+    end // update_ctrl
 endmodule // fltcpu_regfile
 
 //======================================================================
