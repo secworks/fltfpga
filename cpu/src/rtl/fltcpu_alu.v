@@ -135,7 +135,7 @@ module fltcpu_alu(
                           (src0_data <<< (32 - shamt))};
 
         OPCODE_CMP:
-          eq_data = src0_data == src1_data;
+          tmp_eq_data = src0_data == src1_data;
 
         default:
           begin

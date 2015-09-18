@@ -183,7 +183,7 @@ module fltcpu(
   //----------------------------------------------------------------
   always @*
     begin : mem_access
-      if (instruction_reg)
+      if (instruction_we)
         begin
 
         end
