@@ -100,16 +100,16 @@ module fltcpu_alu(
 
       case (opcode)
         OPCODE_AND:
-          tmp_dst_data = src0_data && src1_data;
+          tmp_dst_data = src0_data & src1_data;
 
         OPCODE_OR:
-          tmp_dst_data = src0_data || src1_data;
+          tmp_dst_data = src0_data | src1_data;
 
         OPCODE_XOR:
           tmp_dst_data = src0_data ^ src1_data;
 
         OPCODE_NOT:
-          tmp_dst_data = !src0_data;
+          tmp_dst_data = ~src0_data;
 
         OPCODE_ADD:
           tmp_dst_data = src0_data + src1_data;

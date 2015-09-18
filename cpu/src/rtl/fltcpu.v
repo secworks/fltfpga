@@ -49,11 +49,11 @@ module fltcpu(
               input wire           clk,
               input wire           reset_n,
 
-              output wire          mem_cs
-              output wire          mem_we
+              output wire          mem_cs,
+              output wire          mem_we,
               output wire [31 : 0] mem_address,
-              input wire [31 : 0]  mem_read_data
-              output wire [31 : 0] mem_write_data
+              input wire [31 : 0]  mem_rd_data,
+              output wire [31 : 0] mem_wr_data
              );
 
 
@@ -96,6 +96,7 @@ module fltcpu(
   wire [31 : 0] pc;
 
   wire          zero_flag;
+  wire          eq_data;
 
 
   //----------------------------------------------------------------
@@ -104,7 +105,7 @@ module fltcpu(
   assign mem_cs      = 0;
   assign mem_we      = 0;
   assign mem_address = 32'h00000000;
-  assign mem_data    = 32'h00000000;
+  assign mem_wr_data = 32'h00000000;
 
   assign opcode       = instruction_reg[31 : 26];
   assign dest_addr    = instruction_reg[25 : 21];
@@ -133,7 +134,7 @@ module fltcpu(
                          .zero_flag(zero_flag),
 
                          .inc(inc_pc),
-                         .return(ret_pc),
+                         .ret(ret_pc),
                          .pc(pc)
                         );
 
@@ -167,7 +168,7 @@ module fltcpu(
       else
         begin
           if (instruction_we)
-            instruction_reg <= mem_read_data;
+            instruction_reg <= mem_rd_data;
 
           if (fltcpu_ctrl_we)
             fltcpu_ctrl_reg <= fltcpu_ctrl_new;
@@ -182,7 +183,7 @@ module fltcpu(
   //----------------------------------------------------------------
   always @*
     begin : mem_access
-      if (mem_instruction)
+      if (instruction_reg)
         begin
 
         end

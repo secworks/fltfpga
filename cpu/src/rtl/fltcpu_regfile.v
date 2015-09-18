@@ -57,8 +57,8 @@ module fltcpu_regfile(
                       output wire          zero_flag,
 
                       // Program counter.
-                      input                inc,
-                      input wire           return,
+                      input wire           inc,
+                      input wire           ret,
                       output wire [31 : 0] pc
                      );
 
@@ -210,7 +210,7 @@ module fltcpu_regfile(
     begin : pc_update
       return_we = 0;
       gp_we     = 0;
-      pc_new    = 32'h00000000
+      pc_new    = 32'h00000000;
       pc_we     = 0;
 
       if (dst_we && (dst_addr < 30))
@@ -225,7 +225,7 @@ module fltcpu_regfile(
           pc_new    = dst_data;
           pc_we     = 1;
         end
-      else if (return)
+      else if (ret)
         begin
           pc_new = return_reg;
           pc_we  = 1;
