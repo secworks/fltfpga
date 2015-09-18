@@ -36,19 +36,22 @@
 #
 #===================================================================
 
-#WMEM_SRC=../src/rtl/sha256_w_mem.v
-#WMEM_TB_SRC=../src/tb/tb_sha256_w_mem.v
-
-CPU_SRC=../src/rtl/fltcpu_regfile.v
+SRC_DIR=../src/rtl
+CPU_SRC=$(SRC_DIR)/fltcpu.v $(SRC_DIR)/fltcpu_regfile.v $(SRC_DIR)/fltcpu_alu.v
+CPU_TOP=fltcpu
 
 CC=iverilog
-
+LINT=verilator --lint-only
 
 all: cpu
 
 
-top: $(CPU_SRC)
+cpu: $(CPU_SRC)
 	$(CC) -o cpu.sim $(CPU_SRC)
+
+
+lint: $(CPU_SRC)
+	$(LINT) --top-module $(CPU_TOP) $(CPU_SRC)
 
 
 clean:
