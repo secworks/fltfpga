@@ -2,15 +2,19 @@ FLTCPU
 ======
 ## Introduction ##
 The fltfpga CPU is a simple RISC processor core. We could have used an
-ARM clone, OpenRISC or a number of different CPU cores. But what is the
-fun with that?
+ARM clone, RISC-V, OpenRISC or a number of different CPU cores. But what
+is the fun with that?
 
 Anyway, the CPU is a 32-bit CPU with a very limited instruction set. The
 machines has a shared code and data memory to allow dymanic/self
 modifying code, use data as code and other fun things. I/O including
-is memory mapped too. Oh and the program counter (PC) is of course a
-normal register so one can manipulate the PC from SW. Running code
-backwards? Should be doable.
+is memory mapped too. Oh and the program counter (PC) and return address
+(RET) are of course normal registers so one can manipulate the PC and
+RET from SW. Running code backwards by shifting the PC? Jumping by
+setting RET and do a RTS? Should be doable.
+
+The machine reads 32-bit aligned words. But can write independent bytes
+(one to four) to memory.
 
 The first version of the machine will only support integer arithmetic.
 
