@@ -4,13 +4,8 @@
 // --------
 // Top level file of the fltfpga cpu.
 //
-// Instruction format:
-// [31 : 26] 6 bit opcode.
-// [25 : 21] 5 bit destination reg if present.
-// [20 : 16] 5 bit source reg 0 if present
-// [15 : 11] 5 bit source reg 1 if present
-//           5 bit shift amount if present
-// [15 : 0]  16 bit immediate if present
+// For instruction format and details of the CPU see the
+// fltcpu.md document.
 //
 //
 // Author: Joachim Strombergson
@@ -50,7 +45,7 @@ module fltcpu(
               input wire           reset_n,
 
               output wire          mem_cs,
-              output wire          mem_we,
+              output wire [1 : 0]  mem_we,
               output wire [31 : 0] mem_address,
               input wire [31 : 0]  mem_rd_data,
               output wire [31 : 0] mem_wr_data
