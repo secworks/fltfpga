@@ -9,8 +9,8 @@ enable use of the HDMI video and AC97 audio interfaces om ther TerasIC
 FPGA development board. The purpose of this is to be able to implement
 cool demo effects in HW for the benefit of entertainment.
 
-The fltfpga system will contain a CPU a GPU, a DSP/sound engine and a
-few peripherals as needed to implement cool demos.
+The fltfpga system will contain a CPU a GPU, a SPU (DSP/sound engine)
+and a few peripherals as needed to implement cool demos.
 
 The CPU, GPU and the rest of the system are developed separately, but
 are all part of the repo.
@@ -26,16 +26,18 @@ The following components will probably be needed
   C64. Support for 1024x768 with double buffering. Simple macro based
   (copper list) DMA functionality for fast movement. At least 64
   sprites. Text mode overlay. Raster counter to allow CPU to play around
-  with effects.
+  with effects. [Read more about the GPU here.](gpu/doc/fltgpu.md)
 
-- DSP/Sound. 16-32 voices with sample and synthesis based sound. Mixing
-  and master volune. Filters. With sweeps.
+- SPU. DSP/Sound. 16-32 voices with sample and synthesis based
+  sound. Mixing   and master volune. Filters. With sweeps. [Read more
+  about the SPU here.](spu/doc/fltspu.md)
 
-- Timers and IRQ.
+- Timers and IRQ. Several timers with event triggers. Triggers for some
+  external events.
 
 - External interface. At least a UART for external communication.
 
-The CPU talks to the other parts as master-slaves. The GPU and DSP are
+The CPU talks to the other parts as master-slaves. The GPU and SPU are
 expected to have their own memories which they control, albeit they are
 (might be) mapped into the CPU address space. This means that the CPU
 will be able to read and write into the screen memory not being dispayed.
