@@ -83,10 +83,15 @@ Where in the instruction the fields are:
 | 0x16     | ROR        | Rotate right of contents of src0 with number of bits given by src1. Store result in dst register.   |||
 | 0x17     | RORI       | Rotate right of contents of src0 with number of bits given by constant. Store result in dst register.   |||
 |          |            ||||
-| 0x20     | RD         | Read from address given by register, store in register |||
-| 0x21     | RDI        | Read from constant address added with src0, store in register |||
-| 0x22     | WR         | Write contents of register to address given by register |||
-| 0x23     | WRI        | Write contents of register to constant address added with src0 |||
+| 0x20     | RB         | Read byte from address given by src0, which given by src1. Store in dst register. |||
+| 0x21     | RHW        | Read half word from address given by src0, which half word given by src1. Store in dst register. |||
+| 0x22     | RW         | Read from from address given by src0. Store in dst register. |||
+| 0x23     | RWI        | Read from constant address added with src0. Store in dst register. |||
+| 0x27     | RC         | Read given constant, zero extended value into dst register. |||
+| 0x28     | RB         | Write byte in src0 to address given by dst. Which byte is controlled by src1. |||
+| 0x29     | RHW        | Write half word in src0 to address given by dst. Which half word is controlled by src1. |||
+| 0x2a     | RW         | Write contents of src0 to address given by dst. |||
+| 0x2b     | RWI        | Write contents of src0 to address given by dst added with constant. |||
 |          |            ||||
 | 0x30     | CMP        | Compare contents of src0 with src1. Update eq flag.   |||
 | 0x31     | CMPI       | Compare contents of register with constant.   |||
