@@ -61,11 +61,12 @@ Where in the instruction the fields are:
 | opcode   | Mnemonic   | Description   | Registers   | Flags   |
 |:--------:|:----------:|-------------------------------------------|:-----------:|:-------:|
 | 0x00     | BRK        | Break. Do nothing and do not increase PC.   |||
+| 0x01     | NOP        | Do nothing but increase PC.   |||
 |          |            ||||
-| 0x01     | AND        | AND src0 and src1, store result in dst.   |||
-| 0x02     | OR         | Inclusive OR src0 and src1, store result in dst.   |||
-| 0x03     | XOR        | Exclusive OR src0 and src1, store in dst.   |||
-| 0x04     | NOT        | Inverse src0, store in dst.    |||
+| 0x04     | AND        | AND src0 and src1, store result in dst.   |||
+| 0x05     | OR         | Inclusive OR src0 and src1, store result in dst.   |||
+| 0x06     | XOR        | Exclusive OR src0 and src1, store in dst.   |||
+| 0x07     | NOT        | Inverse src0, store in dst.    |||
 |          |            ||||
 | 0x08     | ADD        | Add src0 and src1, store in dst.   |||
 | 0x09     | ADDI       | Add src0 and constant, store in dst.   |||
@@ -83,34 +84,30 @@ Where in the instruction the fields are:
 | 0x16     | ROR        | Rotate right of contents of src0 with number of bits given by src1. Store result in dst register.   |||
 | 0x17     | RORI       | Rotate right of contents of src0 with number of bits given by constant. Store result in dst register.   |||
 |          |            ||||
-| 0x20     | RB         | Read byte from address given by src0, which given by src1. Store in dst register. |||
-| 0x21     | RHW        | Read half word from address given by src0, which half word given by src1. Store in dst register. |||
-| 0x22     | RW         | Read from from address given by src0. Store in dst register. |||
-| 0x23     | RWI        | Read from constant address added with src0. Store in dst register. |||
-| 0x27     | RC         | Read given constant, zero extended value into dst register. |||
-| 0x28     | RB         | Write byte in src0 to address given by dst. Which byte is controlled by src1. |||
-| 0x29     | RHW        | Write half word in src0 to address given by dst. Which half word is controlled by src1. |||
-| 0x2a     | RW         | Write contents of src0 to address given by dst. |||
-| 0x2b     | RWI        | Write contents of src0 to address given by dst added with constant. |||
+| 0x20     | RD         | Read from from address given by src0. Store in dst register. |||
+| 0x21     | RDI        | Read from address given by src0 added with constant. Store in dst register. |||
+| 0x22     | RDC        | Read given constant, zero extended value into dst register. |||
+| 0x28     | WR         | Write contents of src0 to address given by dst. Which bytes are written is controlled by src1|||
+| 0x29     | WRI        | Write contents of src0 to address given by dst added with constant.|||
 |          |            ||||
 | 0x30     | CMP        | Compare contents of src0 with src1. Update eq flag.   |||
-| 0x31     | CMPI       | Compare contents of register with constant.   |||
-| 0x32     | BEQ        | Branch to address given by register if eq flag is set   |||
-| 0x33     | BEQI       | Branch to address given by constant if eq flag is set   |||
+| 0x31     | CMPC       | Compare contents of register src0 with zero extented constant. Update eq flag.  |||
+| 0x32     | BEQ        | Branch to address given by src0 if eq flag is set.   |||
+| 0x33     | BEQI       | Branch to address given by src0 added with constant if eq flag is set.   |||
+| 0x34     | BNE        | Branch to address given by src0 if eq flag is not set.   |||
+| 0x35     | BNEI       | Branch to address given by src added with constant if eq flag is not set.  |||
+| 0x38     | JSR        | Jump to address given by src0. Store PC in return register.  |||
+| 0x39     | JSRI       | Jump to address given by src0 added with constant. Store PC in return register.  |||
+| 0x3a     | JMP        | Jump to address given by src0.   |||
+| 0x3b     | JMPI       | Jump to address given by src0 added with constant.  |||
+| 0x3f     | RTS        | Return from subroutine using stored return address. Updates PC. |||
+|          |            ||||
 
-| 0x38     | BNE        | Branch to address given by register if eq flag is not set   |||
-| 0x39     | BNEI       | Branch to address given by constant if eq flag is not set   |||
-| 0x3a     | JSR        | Jump to address given by register, store PC in return address   |||
-| 0x3b     | JMP        | Jump to address given by register   |||
-| 0x3c     | JMPI       | Jump to address given by constant and src0 |||
-| 0x3f     | RTS        | Return from subroutine using stored return address   |||
 
-
-In total: 32 instructions.
+In total: 36 instructions out of a maximum of 64.
 
 
 ## TODO ##
-- Instruction opcode encoding.
 - Interrupt support
 - Boot
 
