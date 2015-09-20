@@ -143,8 +143,6 @@ module fltcpu_regfile(
           gp_reg[25] <= 32'h00000000;
           gp_reg[26] <= 32'h00000000;
           gp_reg[27] <= 32'h00000000;
-          gp_reg[28] <= 32'h00000000;
-          gp_reg[29] <= 32'h00000000;
           return_reg <= 32'h00000000;
           pc_reg     <= BOOT_VECTOR;
         end
