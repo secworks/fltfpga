@@ -72,10 +72,15 @@ module fltcpu_regfile(
   //----------------------------------------------------------------
   // Registers including update variables and write enable.
   //----------------------------------------------------------------
-  reg [31 : 0] gp_reg [0 : 29];
+  reg [31 : 0] gp_reg [0 : 27];
   reg          gp_we;
 
-  reg [31 : 0] status_reg;
+  reg          zero_reg;
+  reg          zero_we;
+  reg          eq_reg;
+  reg          eq_we;
+  reg          carry_reg;
+  reg          carry_we;
 
   reg [31 : 0] return_reg;
   reg          return_we;
@@ -164,11 +169,14 @@ module fltcpu_regfile(
   //----------------------------------------------------------------
   always @*
     begin : read_src0
-      if (src0_addr < 28)
-        tmp_src0_data = gp_reg[src0_addr];
+      if (src0_addr == 0)
+        tmp_src0_data = 32'h00000000;
+
+      if (0 < src0_addr < 29)
+        tmp_src0_data = gp_reg[(src0_addr - 1)];
 
       else if (src0_addr == 29)
-        tmp_src0_data = status_reg;
+        tmp_src0_data = {carry_reg, eq_reg, zero_reg};
 
       else if (src0_addr == 30)
         tmp_src0_data = return_reg;
@@ -185,11 +193,14 @@ module fltcpu_regfile(
   //----------------------------------------------------------------
   always @*
     begin : read_src1
-      if (src1_addr < 28)
-        tmp_src1_data = gp_reg[src1_addr];
+      if (src1_addr == 0)
+        tmp_src1_data = 32'h00000000;
+
+      if (0 < src1_addr < 29)
+        tmp_src1_data = gp_reg[(src1_addr - 1)];
 
       else if (src1_addr == 29)
-        tmp_src0_data = status_reg;
+        tmp_src1_data = {carry_reg, eq_reg, zero_reg};
 
       else if (src1_addr == 30)
         tmp_src1_data = return_reg;
