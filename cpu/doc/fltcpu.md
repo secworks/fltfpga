@@ -32,10 +32,11 @@ The first version of the machine will only support integer arithmetic.
 ## Register map ##
 32 registers in total. All registers are directly writeable by SW. This means that one can easily jump, change status regs, manipulate return addresses.
 
-- r00..r28: General registers.
+- r00: Zero registers. Will always return zero.
+- r01..r28: General registers.
 - r29: status register (zero, carry, equal etc...) Not a complete register. Only the specified bits are actually there.
-- r30: return address
-- r31: program counter
+- r30: return address.
+- r31: program counter.
 
 
 ## Instruction types and structure ##
@@ -91,8 +92,9 @@ Where in the instruction the fields are:
 | 0x20     | RD         | Read from from address given by src0. Store in dst register. |||
 | 0x21     | RDI        | Read from address given by src0 added with constant. Store in dst register. |||
 | 0x22     | RDC        | Read given constant, zero extended value into dst register. |||
-| 0x28     | WR         | Write contents of src0 to address given by dst. Which bytes are written is controlled by src1|||
-| 0x29     | WRI        | Write contents of src0 to address given by dst added with constant.|||
+| 0x28     | WR         | Write contents of src0 to address given by dst. Which bytes are written is controlled by src1.  |||
+| 0x29     | WRI        | Write contents of src0 to address given by dst added with constant. |||
+| 0x2a     | MV         | Move contents in src0 to dst.   |||
 |          |            ||||
 | 0x30     | CMP        | Compare contents of src0 with src1. Update eq flag.   |||
 | 0x31     | CMPC       | Compare contents of register src0 with zero extented constant. Update eq flag.  |||
