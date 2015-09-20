@@ -109,8 +109,7 @@ Where in the instruction the fields are:
 | 0x3f     | RTS        | Return from subroutine using stored return address. Updates PC. |||
 |          |            ||||
 
-
-In total: 36 instructions out of a maximum of 64.
+In total: 37 instructions out of a maximum of 64.
 
 
 ## TODO ##
