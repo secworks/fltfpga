@@ -55,7 +55,23 @@ module fltcpu(
   //----------------------------------------------------------------
   // Internal constant and parameter definitions.
   //----------------------------------------------------------------
-  localparam FLTCPU_IDLE = 4'h0;
+  // Control states.
+  localparam CTRL_IDLE        = 4'h0;
+  localparam CTRL_INSTR_READ  = 4'h1;
+  localparam CTRL_INSTR_WAIT  = 4'h2;
+  localparam CTRL_INSTR_STORE = 4'h3;
+  localparam CTRL_INSTR_EXE0  = 4'h4;
+  localparam CTRL_MEM_WRITE   = 4'h5;
+  localparam CTRL_MEM_READ    = 4'h6;
+  localparam CTRL_MEM_WAIT    = 4'h7;
+  localparam CTRL_INSTR_EXE1  = 4'h8;
+  localparam CTRL_INSTR_DONE  = 4'h9;
+  localparam CTRL_IRQ_START   = 4'hc;
+  localparam CTRL_IRQ_DECODE  = 4'hd;
+  localparam CTRL_IRQ_DONE    = 4'he;
+
+
+  // Instruction types.
 
 
   //----------------------------------------------------------------
@@ -158,7 +174,7 @@ module fltcpu(
       if (!reset_n)
         begin
           instruction_reg <= 32'h00000000;
-          fltcpu_ctrl_reg <= FLTCPU_IDLE;
+          fltcpu_ctrl_reg <= CTRL_IDLE;
         end
       else
         begin
@@ -209,15 +225,67 @@ module fltcpu(
   //----------------------------------------------------------------
   always @*
     begin : fltcpu_ctrl
+      dest_we         = 0;
       instruction_we  = 0;
+      carry_we        = 0;
+      zero_we         = 0;
+      eq_we           = 0;
       inc_pc          = 0;
       ret_pc          = 0;
-
-      fltcpu_ctrl_new = FLTCPU_IDLE;
+      fltcpu_ctrl_new = CTRL_IDLE;
       fltcpu_ctrl_we  = 0;
 
       case (fltcpu_ctrl_reg)
-        FLTCPU_IDLE:
+        CTRL_IDLE:
+          begin
+
+          end
+
+        CTRL_INSTR_READ:
+          begin
+          end
+
+        CTRL_INSTR_WAIT:
+          begin
+          end
+
+        CTRL_INSTR_STORE:
+          begin
+          end
+
+        CTRL_INSTR_EXE0:
+          begin
+          end
+
+        CTRL_MEM_WRITE:
+          begin
+          end
+
+        CTRL_MEM_READ:
+          begin
+          end
+
+        CTRL_MEM_WAIT:
+          begin
+          end
+
+        CTRL_INSTR_EXE1:
+          begin
+          end
+
+        CTRL_INSTR_DONE:
+          begin
+          end
+
+        CTRL_IRQ_START:
+          begin
+          end
+
+        CTRL_IRQ_DECODE:
+          begin
+          end
+
+        CTRL_IRQ_DONE:
           begin
           end
 
