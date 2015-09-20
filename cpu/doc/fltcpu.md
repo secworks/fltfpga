@@ -32,11 +32,11 @@ The first version of the machine will only support integer arithmetic.
 ## Register map ##
 32 registers in total. All registers are directly writeable by SW. This means that one can easily jump, change status regs, manipulate return addresses.
 
-- r00: Zero registers. Will always return zero.
-- r01..r28: General registers.
-- r29: status register (zero, carry, equal etc...) Not a complete register. Only the specified bits are actually there.
-- r30: return address.
-- r31: program counter.
+- r00: Zero registers (ZERO). Will always return zero.
+- r01..r28: General registers (GP01..GP28).
+- r29: status register (STATUS). (zero, carry, equal etc...) Not a complete register. Only the specified bits are actually there.
+- r30: return address (RET).
+- r31: program counter (PC).
 
 
 ## Instruction types and structure ##
@@ -73,17 +73,17 @@ Where in the instruction the fields are:
 | 0x06     | XOR        | Exclusive OR src0 and src1, store in dst.   | dst | zero |
 | 0x07     | NOT        | Inverse src0, store in dst.    | dst | zero |
 |          |            ||||
-| 0x08     | ADD        | Add src0 and src1, store in dst.   | dst | zero |
-| 0x09     | ADDI       | Add src0 and constant, store in dst.   | dst | zero |
+| 0x08     | ADD        | Add src0 and src1, store in dst.   | dst | carry, zero |
+| 0x09     | ADDI       | Add src0 and constant, store in dst.   | dst | carry, zero |
 | 0x0a     | SUB        | Substract src1 from src0, store in dst   | dst | zero |
 | 0x0b     | SUBI       | Subtract constant from src0, store in dst  | dst | zero |
-| 0x0c     | MUL        | Multiply src0 and src1, store in dst | dst | zero |
-| 0x0d     | MULI       | Multiply srx0 with constant, store in dst | dst | zero |
+| 0x0c     | MUL        | Multiply src0 and src1, store in dst | dst | carry, zero |
+| 0x0d     | MULI       | Multiply srx0 with constant, store in dst | dst | carry, zero |
 |          |            ||||
-| 0x10     | ASL        | Arithmetic shift left of contents of src0 with number of bits given by src1. Store result in dst. | dst | zero |
-| 0x11     | ASLI       | Arithmetic shift left of contents of src0 with number of bits given by constant. Store result in dst. | dst | zero |
-| 0x12     | ASR        | Arithmetic shift right of contents of src0 with number of bits given by src1. Store result in dst. | dst | zero |
-| 0x13     | ASRI       | Arithmetic shift right of contents of src0 with number of bits given by constant. Store result in dst. | dst | zero |
+| 0x10     | ASL        | Arithmetic shift left of contents of src0 with number of bits given by src1. Store result in dst. | dst | carry, zero |
+| 0x11     | ASLI       | Arithmetic shift left of contents of src0 with number of bits given by constant. Store result in dst. | dst | carry, zero |
+| 0x12     | ASR        | Arithmetic shift right of contents of src0 with number of bits given by src1. Store result in dst. | dst | carry, zero |
+| 0x13     | ASRI       | Arithmetic shift right of contents of src0 with number of bits given by constant. Store result in dst. | dst | carry, zero |
 | 0x14     | ROL        | Rotate left of contents of src0 with number of bits given by src1. Store result in dst.   | dst ||
 | 0x15     | ROLI       | Rotate left of contents of src0 with number of bits given by constant. Store result in dst.   | dst ||
 | 0x16     | ROR        | Rotate right of contents of src0 with number of bits given by src1. Store result in dst.   | dst ||
