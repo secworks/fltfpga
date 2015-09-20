@@ -65,48 +65,48 @@ Where in the instruction the fields are:
 
 | opcode   | Mnemonic   | Description   | Registers   | Flags   |
 |:--------:|:----------:|-------------------------------------------|:-----------:|:-------:|
-| 0x00     | BRK        | Break. Do nothing and do not increase PC.   |||
-| 0x01     | NOP        | Do nothing but increase PC.   |||
+| 0x00     | BRK        | Break. Do nothing and do not increase PC.   | |   |
+| 0x01     | NOP        | Do nothing but increase PC.   | PC ||
 |          |            ||||
-| 0x04     | AND        | AND src0 and src1, store result in dst.   |||
-| 0x05     | OR         | Inclusive OR src0 and src1, store result in dst.   |||
-| 0x06     | XOR        | Exclusive OR src0 and src1, store in dst.   |||
-| 0x07     | NOT        | Inverse src0, store in dst.    |||
+| 0x04     | AND        | AND src0 and src1, store result in dst.   | src0, src1, dst | zero |
+| 0x05     | OR         | Inclusive OR src0 and src1, store result in dst.   | src0, src1, dst | zero |
+| 0x06     | XOR        | Exclusive OR src0 and src1, store in dst.   | src0, src1, dst | zero |
+| 0x07     | NOT        | Inverse src0, store in dst.    |src0, dst | zero |
 |          |            ||||
-| 0x08     | ADD        | Add src0 and src1, store in dst.   |||
-| 0x09     | ADDI       | Add src0 and constant, store in dst.   |||
-| 0x0a     | SUB        | Substract one register from register, store in register   |||
-| 0x0b     | SUBI       | Subtract constant from register, store in register   |||
-| 0x0c     | MUL        | Multiply two registers, store in register   |||
-| 0x0d     | MULI       | Multiply register with constant, store in register   |||
+| 0x08     | ADD        | Add src0 and src1, store in dst.   | src0, src1, dst | zero |
+| 0x09     | ADDI       | Add src0 and constant, store in dst.   | src0, dst | zero |
+| 0x0a     | SUB        | Substract src1 from src0, store in dst   | src0, src1, dst | zero |
+| 0x0b     | SUBI       | Subtract constant from src0, store in dst  | src0, src1, dst | zero |
+| 0x0c     | MUL        | Multiply src0 and src1, store in dst | src0, src1, dst | zero |
+| 0x0d     | MULI       | Multiply srx0 with constant, store in dst | src0, src1, dst | zero |
 |          |            ||||
-| 0x10     | ASL        | Arithmetic shift left of contents of src0 with number of bits given by src1. Store result in dst register.   |||
-| 0x11     | ASLI       | Arithmetic shift left of contents of src0 with number of bits given by constant. Store result in dst register.   |||
-| 0x12     | ASR        | Arithmetic shift right of contents of src0 with number of bits given by src1. Store result in dst register.   |||
-| 0x13     | ASRI       | Arithmetic shift right of contents of src0 with number of bits given by constant. Store result in dst register.   |||
-| 0x14     | ROL        | Rotate left of contents of src0 with number of bits given by src1. Store result in dst register.   |||
-| 0x15     | ROLI       | Rotate left of contents of src0 with number of bits given by constant. Store result in dst register.   |||
-| 0x16     | ROR        | Rotate right of contents of src0 with number of bits given by src1. Store result in dst register.   |||
-| 0x17     | RORI       | Rotate right of contents of src0 with number of bits given by constant. Store result in dst register.   |||
+| 0x10     | ASL        | Arithmetic shift left of contents of src0 with number of bits given by src1. Store result in dst register. | src0, src1, dst | zero |
+| 0x11     | ASLI       | Arithmetic shift left of contents of src0 with number of bits given by constant. Store result in dst register.   | src0, dst | zero |
+| 0x12     | ASR        | Arithmetic shift right of contents of src0 with number of bits given by src1. Store result in dst register.   | src0, src1, dst | zero |
+| 0x13     | ASRI       | Arithmetic shift right of contents of src0 with number of bits given by constant. Store result in dst register.   | src0, dst | zero |
+| 0x14     | ROL        | Rotate left of contents of src0 with number of bits given by src1. Store result in dst register.   | src0, src1, dst ||
+| 0x15     | ROLI       | Rotate left of contents of src0 with number of bits given by constant. Store result in dst register.   | src0, dst ||
+| 0x16     | ROR        | Rotate right of contents of src0 with number of bits given by src1. Store result in dst register.   | src0, src1, dst ||
+| 0x17     | RORI       | Rotate right of contents of src0 with number of bits given by constant. Store result in dst register.   | src0, dst ||
 |          |            ||||
-| 0x20     | RD         | Read from from address given by src0. Store in dst register. |||
-| 0x21     | RDI        | Read from address given by src0 added with constant. Store in dst register. |||
-| 0x22     | RDC        | Read given constant, zero extended value into dst register. |||
-| 0x28     | WR         | Write contents of src0 to address given by dst. Which bytes are written is controlled by src1.  |||
-| 0x29     | WRI        | Write contents of src0 to address given by dst added with constant. |||
-| 0x2a     | MV         | Move contents in src0 to dst.   |||
+| 0x20     | RD         | Read from from address given by src0. Store in dst register. | src0, dst ||
+| 0x21     | RDI        | Read from address given by src0 added with constant. Store in dst register. | src0, dst ||
+| 0x22     | RDC        | Read given constant, zero extended value into dst register. | dst ||
+| 0x28     | WR         | Write contents of src0 to address given by dst. Which bytes are written is controlled by src1.  | src0, src1, dst ||
+| 0x29     | WRI        | Write contents of src0 to address given by dst added with constant. | src0, dst ||
+| 0x2a     | MV         | Move contents in src0 to dst.   | src0, dst ||
 |          |            ||||
-| 0x30     | CMP        | Compare contents of src0 with src1. Update eq flag.   |||
-| 0x31     | CMPC       | Compare contents of register src0 with zero extented constant. Update eq flag.  |||
-| 0x32     | BEQ        | Branch to address given by src0 if eq flag is set.   |||
-| 0x33     | BEQI       | Branch to address given by src0 added with constant if eq flag is set.   |||
-| 0x34     | BNE        | Branch to address given by src0 if eq flag is not set.   |||
-| 0x35     | BNEI       | Branch to address given by src added with constant if eq flag is not set.  |||
-| 0x38     | JSR        | Jump to address given by src0. Store PC in return register.  |||
-| 0x39     | JSRI       | Jump to address given by src0 added with constant. Store PC in return register.  |||
-| 0x3a     | JMP        | Jump to address given by src0.   |||
-| 0x3b     | JMPI       | Jump to address given by src0 added with constant.  |||
-| 0x3f     | RTS        | Return from subroutine using stored return address. Updates PC. |||
+| 0x30     | CMP        | Compare contents of src0 with src1. Update eq flag.   | src0, src1 | eq |
+| 0x31     | CMPI       | Compare contents of register src0 with zero extented constant. Update eq flag.  | src0 | eq |
+| 0x32     | BEQ        | Branch to address given by dst if eq flag is set.   | dst | eq ||
+| 0x33     | BEQI       | Branch to address given by dst added with constant if eq flag is set. | dst | eq |
+| 0x34     | BNE        | Branch to address given by dst if eq flag is not set.   | dst | eq |
+| 0x35     | BNEI       | Branch to address given by dst added with constant if eq flag is not set.  | dst | eq |
+| 0x38     | JSR        | Jump to address given by dst. Store PC in return register.  | dst, pc, ret ||
+| 0x39     | JSRI       | Jump to address given by dst added with constant. Store PC in return register.  | dst, pc, ret ||
+| 0x3a     | JMP        | Jump to address given by dst.   | dst, pc ||
+| 0x3b     | JMPI       | Jump to address given by dst added with constant.  | dst, pc ||
+| 0x3f     | RTS        | Return from subroutine using stored return address. Updates PC. | ret, pc ||
 |          |            ||||
 
 In total: 37 instructions out of a maximum of 64.
