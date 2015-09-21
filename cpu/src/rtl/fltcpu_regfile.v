@@ -241,7 +241,7 @@ module fltcpu_regfile(
         end
       else if (inc)
         begin
-          pc_new = pc_reg + 4;
+          pc_new = pc_reg + 1;
           pc_we  = 1;
         end
     end // update_ctrl
