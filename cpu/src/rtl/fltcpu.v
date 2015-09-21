@@ -71,7 +71,49 @@ module fltcpu(
   localparam CTRL_IRQ_DONE    = 4'he;
 
 
+  // Opcodes.
+  localparam OP_BRK  = 6'h00;
+  localparam OP_NOP  = 6'h01;
+  localparam OP_AND  = 6'h04;
+  localparam OP_OR   = 6'h05;
+  localparam OP_XOR  = 6'h06;
+  localparam OP_NOT  = 6'h07;
+  localparam OP_ADD  = 6'h08;
+  localparam OP_ADDI = 6'h09;
+  localparam OP_SUB  = 6'h0a;
+  localparam OP_SUBI = 6'h0b;
+  localparam OP_MUL  = 6'h0c;
+  localparam OP_MULI = 6'h0d;
+  localparam OP_ASL  = 6'h10;
+  localparam OP_ASLI = 6'h11;
+  localparam OP_ASR  = 6'h12;
+  localparam OP_ASRI = 6'h13;
+  localparam OP_ROL  = 6'h14;
+  localparam OP_ROLI = 6'h15;
+  localparam OP_ROR  = 6'h16;
+  localparam OP_RORI = 6'h17;
+  localparam OP_RD   = 6'h20;
+  localparam OP_RDI  = 6'h21;
+  localparam OP_RDC  = 6'h22;
+  localparam OP_WR   = 6'h28;
+  localparam OP_WRI  = 6'h29;
+  localparam OP_MV   = 6'h2a;
+  localparam OP_CMP  = 6'h30;
+  localparam OP_CMPI = 6'h31;
+  localparam OP_BEQ  = 6'h32;
+  localparam OP_BEQI = 6'h33;
+  localparam OP_BNEI = 6'h35;
+  localparam OP_JSR  = 6'h38;
+  localparam OP_JSRI = 6'h39;
+  localparam OP_JMP  = 6'h3a;
+  localparam OP_JMPI = 6'h3b;
+  localparam OP_RTS  = 6'h3f;
+
   // Instruction types.
+  localparam ITYPE_REG_REG = 2'h0;
+  localparam ITYPE_MEM_RD  = 2'h1;
+  localparam ITYPE_MEM_WR  = 2'h2;
+  localparam oITYPE_MEM_JMP = 2'h3;
 
 
   //----------------------------------------------------------------
@@ -108,6 +150,8 @@ module fltcpu(
 
   wire          zero_flag;
   wire          eq_data;
+
+  reg [1 : 0]   instr_type;
 
 
   //----------------------------------------------------------------
@@ -206,14 +250,75 @@ module fltcpu(
 
 
   //----------------------------------------------------------------
-  // select_operands
+  // instruction_decode
   //
-  // Select the operands used during operations. This mainly
-  // relates to source1 since it will be replaced by a zero
-  // extended constant for operations that uses them.
+  // Detect instruction type and select operands based on the
+  // current instruction.
   //----------------------------------------------------------------
   always @*
     begin : select_operands
+
+      case (opcode)
+        OP_BRK:
+        OP_NOP:
+        OP_AND:
+        OP_OR:
+        OP_XOR:
+        OP_NOT:
+        OP_ADD:
+        OP_ADDI:
+        OP_SUB:
+        OP_SUBI:
+        OP_MUL:
+        OP_MULI:
+        OP_ASL:
+        OP_ASLI:
+        OP_ASR:
+        OP_ASRI:
+        OP_ROL:
+        OP_ROLI:
+        OP_ROR:
+        OP_RORI:
+        OP_MV:
+        OP_CMP:
+        OP_CMPI:
+          begin
+            intr_type = ITYPE_REG_REG;
+          end
+
+        OP_RD:
+        OP_RDI:
+        OP_RDC:
+          begin
+            intr_type = ITYPE_MEM_RD;
+          end
+
+        OP_WR:
+        OP_WRI:
+          begin
+            intr_type = ITYPE_MEM_WR;
+          end
+
+        OP_BEQ:
+        OP_BEQI:
+        OP_BNEI:
+        OP_JSR :
+        OP_JSRI:
+        OP_JMP:
+        OP_JMPI:
+        OP_RTS:
+          begin
+            intr_type = ITYPE_MEM_JMP;
+          end
+
+        default:
+          begin
+
+          end
+      endcase // case (opcode)
+
+      // Decode instruction types
+
 
     end // select_operands
 
@@ -232,25 +337,40 @@ module fltcpu(
       eq_we           = 0;
       inc_pc          = 0;
       ret_pc          = 0;
+      mem_cs          = 0;
+      mem_we          = 0;
+      mem_address     = 0;
       fltcpu_ctrl_new = CTRL_IDLE;
       fltcpu_ctrl_we  = 0;
 
       case (fltcpu_ctrl_reg)
         CTRL_IDLE:
           begin
-
+            fltcpu_ctrl_new = CTRL_INSTR_READ;
+            fltcpu_ctrl_we  = 1;
           end
 
         CTRL_INSTR_READ:
           begin
+            mem_cs          = 1;
+            mem_address     = MEM_PC;
+            fltcpu_ctrl_new = CTRL_INSTR_WAIT;
+            fltcpu_ctrl_we  = 1;
           end
 
         CTRL_INSTR_WAIT:
           begin
+            mem_cs          = 1;
+            mem_address     = MEM_PC;
+            fltcpu_ctrl_new = CTRL_INSTR_STORE;
+            fltcpu_ctrl_we  = 1;
           end
 
         CTRL_INSTR_STORE:
           begin
+            instruction_we  = 1;
+            fltcpu_ctrl_new = CTRL_INSTR_STORE;
+            fltcpu_ctrl_we  = 1;
           end
 
         CTRL_INSTR_EXE0:
