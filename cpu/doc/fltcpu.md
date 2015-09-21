@@ -92,8 +92,8 @@ Where in the instruction the fields are:
 | 0x20     | RD         | Read from from address given by src0. Store in dst. | dst ||
 | 0x21     | RDI        | Read from address given by src0 added with constant. Store in dst. | dst ||
 | 0x22     | RDC        | Read given constant, zero extended value into dst. | dst ||
-| 0x28     | WR         | Write contents of src0 to address given by dst. Which bytes are written is controlled by src1. |||
-| 0x29     | WRI        | Write contents of src0 to address given by dst added with constant. |||
+| 0x28     | WR         | Write contents of src0 to address given by dst. Which bytes are written is controlled by src1 one-hot encoded. |||
+| 0x29     | WRI        | Write contents of src0 to address given by dst added with constant. Note that this will only write the full word. |||
 | 0x2a     | MV         | Move contents in src0 to dst.   | dst ||
 |          |            ||||
 | 0x30     | CMP        | Compare contents of src0 with src1. Update eq flag. || eq |
