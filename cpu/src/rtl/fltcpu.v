@@ -45,7 +45,7 @@ module fltcpu(
               input wire           reset_n,
 
               output wire          mem_cs,
-              output wire [1 : 0]  mem_we,
+              output wire [3 : 0]  mem_we,
               output wire [31 : 0] mem_address,
               input wire [31 : 0]  mem_rd_data,
               output wire [31 : 0] mem_wr_data
