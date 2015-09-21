@@ -51,7 +51,8 @@ module fltcpu_regfile(
 
                       input wire           dst_we,
                       input wire [4 : 0]   dst_addr,
-                      output wire [31 : 0] dst_data,
+                      input wire [31 : 0]  dst_wr_data,
+                      output wire [31 : 0] dst_rd_data,
 
                       // Flags.
                       output wire          zero_flag,
@@ -95,14 +96,16 @@ module fltcpu_regfile(
   //----------------------------------------------------------------
   reg [31 : 0] tmp_src0_data;
   reg [31 : 0] tmp_src1_data;
+  reg [31 : 0] tmp_dst_data;
 
 
   //----------------------------------------------------------------
   // Concurrent connectivity for ports etc.
   //----------------------------------------------------------------
-  assign src0_data = tmp_src0_data;
-  assign src1_data = tmp_src1_data;
-  assign pc        = pc_reg;
+  assign src0_data   = tmp_src0_data;
+  assign src1_data   = tmp_src1_data;
+  assign dst_rd_data = tmp_dst_data;
+  assign pc          = pc_reg;
 
 
   //----------------------------------------------------------------
@@ -149,7 +152,7 @@ module fltcpu_regfile(
       else
         begin
           if (gp_we)
-            gp_reg[dst_addr] <= dst_data;
+            gp_reg[dst_addr] <= dst_wr_data;
 
           if (pc_we)
             pc_reg <= pc_new;
@@ -206,6 +209,30 @@ module fltcpu_regfile(
       else if (src1_addr == 31)
         tmp_src1_data = pc_reg;
     end // read_src1
+
+
+  //----------------------------------------------------------------
+  // read_dst
+  //
+  // Combinational read of operand dst.
+  //----------------------------------------------------------------
+  always @*
+    begin : read_dst
+      if (dst_addr == 0)
+        tmp_dst_rd_data = 32'h00000000;
+
+      if (0 < dst_addr < 29)
+        tmp_dst_rd_data = gp_reg[(src1_addr - 1)];
+
+      else if (dst_addr == 29)
+        tmp_dst_rd_data = {carry_reg, eq_reg, zero_reg};
+
+      else if (dst_addr == 30)
+        tmp_dst_rd_data = return_reg;
+
+      else if (dst_addr == 31)
+        tmp_dst_rd_data = pc_reg;
+    end // read_dst
 
 
   //----------------------------------------------------------------
