@@ -67,6 +67,7 @@ Where in the instruction the fields are:
 |:--------:|:----------:|-------------------------------------------|:-----------:|:-------:|
 | 0x00     | BRK        | Break. Do nothing and do not increase PC.   | |   |
 | 0x01     | NOP        | Do nothing but increase PC.   | PC ||
+| 0x02     | EXE        | Execute the contents of src as the next instruction. If the instuction does not update PC it will be incremented to next instruction. | PC ||
 |          |            ||||
 | 0x04     | AND        | AND src0 and src1, store result in dst.   | dst | zero |
 | 0x05     | OR         | Inclusive OR src0 and src1, store result in dst.   | dst | zero |
