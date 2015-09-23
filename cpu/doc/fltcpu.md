@@ -35,7 +35,7 @@ The first version of the machine will only support integer arithmetic.
 - r00: Zero registers (ZERO). Will always return zero.
 - r01..r28: General registers (GP01..GP28).
 - r29: status register (STATUS). (zero, carry, equal etc...) Not a complete register. Only the specified bits are actually there.
-- r30: return address (RET).
+- r30: return address (RET). Is actualla a Top Of Stack (TOS) element. JSR pushes. RTS pops. Any other writes just updates the TOS.
 - r31: program counter (PC).
 
 
