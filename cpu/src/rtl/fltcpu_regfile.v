@@ -86,6 +86,13 @@ module fltcpu_regfile(
   reg [31 : 0] return_reg;
   reg          return_we;
 
+  reg [31 : 0] ret_reg [0 : 15];
+  reg [31 : 0] ret_new;
+  reg          ret_we;
+
+  reg [03 : 0] ret_ptr_reg;
+  reg          ret_ptr_we;
+
   reg [31 : 0] pc_reg;
   reg [31 : 0] pc_new;
   reg          pc_we;
@@ -118,36 +125,52 @@ module fltcpu_regfile(
     begin
       if (!reset_n)
         begin
-          gp_reg[00] <= 32'h00000000;
-          gp_reg[01] <= 32'h00000000;
-          gp_reg[02] <= 32'h00000000;
-          gp_reg[03] <= 32'h00000000;
-          gp_reg[04] <= 32'h00000000;
-          gp_reg[05] <= 32'h00000000;
-          gp_reg[06] <= 32'h00000000;
-          gp_reg[07] <= 32'h00000000;
-          gp_reg[08] <= 32'h00000000;
-          gp_reg[09] <= 32'h00000000;
-          gp_reg[10] <= 32'h00000000;
-          gp_reg[11] <= 32'h00000000;
-          gp_reg[12] <= 32'h00000000;
-          gp_reg[13] <= 32'h00000000;
-          gp_reg[14] <= 32'h00000000;
-          gp_reg[15] <= 32'h00000000;
-          gp_reg[16] <= 32'h00000000;
-          gp_reg[17] <= 32'h00000000;
-          gp_reg[18] <= 32'h00000000;
-          gp_reg[19] <= 32'h00000000;
-          gp_reg[20] <= 32'h00000000;
-          gp_reg[21] <= 32'h00000000;
-          gp_reg[22] <= 32'h00000000;
-          gp_reg[23] <= 32'h00000000;
-          gp_reg[24] <= 32'h00000000;
-          gp_reg[25] <= 32'h00000000;
-          gp_reg[26] <= 32'h00000000;
-          gp_reg[27] <= 32'h00000000;
-          return_reg <= 32'h00000000;
-          pc_reg     <= BOOT_VECTOR;
+          gp_reg[00]  <= 32'h00000000;
+          gp_reg[01]  <= 32'h00000000;
+          gp_reg[02]  <= 32'h00000000;
+          gp_reg[03]  <= 32'h00000000;
+          gp_reg[04]  <= 32'h00000000;
+          gp_reg[05]  <= 32'h00000000;
+          gp_reg[06]  <= 32'h00000000;
+          gp_reg[07]  <= 32'h00000000;
+          gp_reg[08]  <= 32'h00000000;
+          gp_reg[09]  <= 32'h00000000;
+          gp_reg[10]  <= 32'h00000000;
+          gp_reg[11]  <= 32'h00000000;
+          gp_reg[12]  <= 32'h00000000;
+          gp_reg[13]  <= 32'h00000000;
+          gp_reg[14]  <= 32'h00000000;
+          gp_reg[15]  <= 32'h00000000;
+          gp_reg[16]  <= 32'h00000000;
+          gp_reg[17]  <= 32'h00000000;
+          gp_reg[18]  <= 32'h00000000;
+          gp_reg[19]  <= 32'h00000000;
+          gp_reg[20]  <= 32'h00000000;
+          gp_reg[21]  <= 32'h00000000;
+          gp_reg[22]  <= 32'h00000000;
+          gp_reg[23]  <= 32'h00000000;
+          gp_reg[24]  <= 32'h00000000;
+          gp_reg[25]  <= 32'h00000000;
+          gp_reg[26]  <= 32'h00000000;
+          gp_reg[27]  <= 32'h00000000;
+          ret_reg[00] <= 32'h00000000;
+          ret_reg[01] <= 32'h00000000;
+          ret_reg[02] <= 32'h00000000;
+          ret_reg[03] <= 32'h00000000;
+          ret_reg[04] <= 32'h00000000;
+          ret_reg[05] <= 32'h00000000;
+          ret_reg[06] <= 32'h00000000;
+          ret_reg[07] <= 32'h00000000;
+          ret_reg[08] <= 32'h00000000;
+          ret_reg[09] <= 32'h00000000;
+          ret_reg[10] <= 32'h00000000;
+          ret_reg[11] <= 32'h00000000;
+          ret_reg[12] <= 32'h00000000;
+          ret_reg[13] <= 32'h00000000;
+          ret_reg[14] <= 32'h00000000;
+          ret_reg[15] <= 32'h00000000;
+          ret_ptr_reg <= 4'h0;
+          pc_reg      <= BOOT_VECTOR;
         end
       else
         begin
@@ -157,8 +180,11 @@ module fltcpu_regfile(
           if (pc_we)
             pc_reg <= pc_new;
 
-          if (return_we)
-            return_reg <= pc_reg;
+          if (ret_we)
+            ret_reg[ret_ptr_reg] <= ret_new;
+
+          if (ret_ptr_we)
+            ret_ptr_reg <= ret_ptr_new;
         end
     end // reg_update
 
@@ -180,7 +206,7 @@ module fltcpu_regfile(
         tmp_src0_data = {carry_reg, eq_reg, zero_reg};
 
       else if (src0_addr == 30)
-        tmp_src0_data = return_reg;
+        tmp_src0_data = ret_reg[ret_ptr_reg];
 
       else if (src0_addr == 31)
         tmp_src0_data = pc_reg;
@@ -204,7 +230,7 @@ module fltcpu_regfile(
         tmp_src1_data = {carry_reg, eq_reg, zero_reg};
 
       else if (src1_addr == 30)
-        tmp_src1_data = return_reg;
+        tmp_src1_data = ret_reg[ret_ptr_reg];
 
       else if (src1_addr == 31)
         tmp_src1_data = pc_reg;
@@ -228,7 +254,7 @@ module fltcpu_regfile(
         tmp_dst_rd_data = {carry_reg, eq_reg, zero_reg};
 
       else if (dst_addr == 30)
-        tmp_dst_rd_data = return_reg;
+        tmp_dst_rd_data = ret_reg[ret_ptr_reg];
 
       else if (dst_addr == 31)
         tmp_dst_rd_data = pc_reg;
@@ -253,18 +279,26 @@ module fltcpu_regfile(
           gp_we = 1;
 
       if (dst_we && (dst_addr == 30))
-          return_we = 1;
+        begin
+          ret_new = dst_wr_data;
+          ret_we = 1;
+        end
 
       if (dst_we && (dst_addr == 31))
         begin
-          return_we = 1;
-          pc_new    = dst_data;
-          pc_we     = 1;
+          ret_new     = pc_reg;
+          ret_we      = 1;
+          ret_ptr_new = ret_ptr_reg + 1;
+          ret_ptr_we  = 1;
+          pc_new      = dst_data;
+          pc_we       = 1;
         end
       else if (ret)
         begin
-          pc_new = return_reg;
-          pc_we  = 1;
+          ret_ptr_new = ret_ptr_reg - 1;
+          ret_ptr_we  = 1;
+          pc_new      = ret_reg[ret_ptr_reg];
+          pc_we       = 1;
         end
       else if (inc)
         begin
