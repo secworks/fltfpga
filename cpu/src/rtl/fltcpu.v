@@ -74,6 +74,7 @@ module fltcpu(
   // Opcodes.
   localparam OP_BRK  = 6'h00;
   localparam OP_NOP  = 6'h01;
+  localparam OP_EXE  = 6'h02;
   localparam OP_AND  = 6'h04;
   localparam OP_OR   = 6'h05;
   localparam OP_XOR  = 6'h06;
