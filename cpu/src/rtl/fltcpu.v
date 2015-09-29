@@ -260,61 +260,52 @@ module fltcpu(
     begin : select_operands
 
       case (opcode)
-        OP_BRK:
-        OP_NOP:
-        OP_AND:
-        OP_OR:
-        OP_XOR:
-        OP_NOT:
-        OP_ADD:
-        OP_ADDI:
-        OP_SUB:
-        OP_SUBI:
-        OP_MUL:
-        OP_MULI:
-        OP_ASL:
-        OP_ASLI:
-        OP_ASR:
-        OP_ASRI:
-        OP_ROL:
-        OP_ROLI:
-        OP_ROR:
-        OP_RORI:
+        OP_BRK, OP_NOP:
+          begin
+          end
+
+        OP_AND, OP_OR, OP_XOR, OP_NOT:
+          begin
+          end
+
+        OP_ADD, OP_ADDI, OP_SUB, OP_SUBI, OP_MUL, OP_MULI:
+          begin
+          end
+
+        OP_ASL, OP_ASLI, OP_ASR, OP_ASRI, OP_ROL, OP_ROLI, OP_ROR, OP_RORI:
+          begin
+          end
+
         OP_MV:
-        OP_CMP:
-        OP_CMPI:
+          begin
+          end
+
+        OP_CMP, OP_CMPI:
           begin
             intr_type = ITYPE_REG_REG;
           end
 
-        OP_RD:
-        OP_RDI:
-        OP_RDC:
+        OP_RD, OP_RDI, OP_RDC:
           begin
             intr_type = ITYPE_MEM_RD;
           end
 
-        OP_WR:
-        OP_WRI:
+        OP_WR. OP_WRI:
           begin
             intr_type = ITYPE_MEM_WR;
           end
 
-        OP_BEQ:
-        OP_BEQI:
-        OP_BNEI:
-        OP_JSR :
-        OP_JSRI:
-        OP_JMP:
-        OP_JMPI:
-        OP_RTS:
+        OP_BEQ, OP_BEQI, OP_BNEI:
+          begin
+          end
+
+        OP_JSR, OP_JSRI, OP_JMP, OP_JMPI, OP_RTS:
           begin
             intr_type = ITYPE_MEM_JMP;
           end
 
         default:
           begin
-
           end
       endcase // case (opcode)
 
