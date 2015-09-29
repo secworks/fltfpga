@@ -115,12 +115,10 @@ module fltcpu_alu(
         OPCODE_NOT:
           tmp_dst_data = ~src0_data;
 
-        OPCODE_ADD:
-        OPCODE_ADDI:
+        OPCODE_ADD, OPCODE_ADDI:
           tmp_dst_data = src0_data + src1_data;
 
-        OPCODE_SUB:
-        OPCODE_SUBI:
+        OPCODE_SUB, OPCODE_SUBI:
           tmp_dst_data = src0_data - src1_data;
 
         OPCODE_MUL:
@@ -140,8 +138,7 @@ module fltcpu_alu(
           tmp_dst_data = {(src0_data >>> shamt),
                           (src0_data <<< (32 - shamt))};
 
-        OPCODE_CMP:
-        OPCODE_CMPI:
+        OPCODE_CMP, OPCODE_CMPI:
           tmp_eq_data = src0_data == src1_data;
 
         default:
