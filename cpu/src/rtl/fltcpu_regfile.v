@@ -91,6 +91,7 @@ module fltcpu_regfile(
   reg          ret_we;
 
   reg [03 : 0] ret_ptr_reg;
+  reg [03 : 0] ret_ptr_new;
   reg          ret_ptr_we;
 
   reg [31 : 0] pc_reg;
@@ -274,6 +275,8 @@ module fltcpu_regfile(
       gp_we     = 0;
       pc_new    = 32'h00000000;
       pc_we     = 0;
+      ret_ptr_new = 32'h00000000;
+      ret_ptr_we  = 0;
 
       if (dst_we && (dst_addr < 30))
           gp_we = 1;
