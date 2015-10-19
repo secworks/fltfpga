@@ -104,7 +104,7 @@ module fltcpu_regfile(
   //----------------------------------------------------------------
   reg [31 : 0] tmp_src0_data;
   reg [31 : 0] tmp_src1_data;
-  reg [31 : 0] tmp_dst_data;
+  reg [31 : 0] tmp_dst_rd_data;
 
 
   //----------------------------------------------------------------
@@ -112,7 +112,7 @@ module fltcpu_regfile(
   //----------------------------------------------------------------
   assign src0_data   = tmp_src0_data;
   assign src1_data   = tmp_src1_data;
-  assign dst_rd_data = tmp_dst_data;
+  assign dst_rd_data = tmp_dst_rd_data;
   assign pc          = pc_reg;
 
 
@@ -293,7 +293,7 @@ module fltcpu_regfile(
           ret_we      = 1;
           ret_ptr_new = ret_ptr_reg + 1;
           ret_ptr_we  = 1;
-          pc_new      = dst_data;
+          pc_new      = dst_wr_data;
           pc_we       = 1;
         end
       else if (ret)

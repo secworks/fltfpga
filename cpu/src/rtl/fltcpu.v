@@ -114,7 +114,7 @@ module fltcpu(
   localparam ITYPE_REG_REG = 2'h0;
   localparam ITYPE_MEM_RD  = 2'h1;
   localparam ITYPE_MEM_WR  = 2'h2;
-  localparam oITYPE_MEM_JMP = 2'h3;
+  localparam ITYPE_MEM_JMP = 2'h3;
 
 
   //----------------------------------------------------------------
@@ -133,9 +133,10 @@ module fltcpu(
   //----------------------------------------------------------------
   wire [5 : 0]  opcode;
 
-  wire [4 : 0]  dest_addr;
-  wire [31 : 0] dest_data;
-  reg           dest_we;
+  wire [4 : 0]  dst_addr;
+  wire [31 : 0] dst_wr_data;
+  wire [31 : 0] dst_rd_data;
+  reg           dst_we;
 
   wire [4 : 0]  source0_addr;
   wire [31 : 0] source0_data;
@@ -154,17 +155,22 @@ module fltcpu(
 
   reg [1 : 0]   instr_type;
 
+  reg           tmp_mem_cs;
+  reg [3 : 0]   tmp_mem_we;
+  reg [31 : 0]  tmp_mem_address;
+  reg [31 : 0]  tmp_mem_wr_data;
+
 
   //----------------------------------------------------------------
   // Concurrent connectivity for ports etc.
   //----------------------------------------------------------------
-  assign mem_cs      = 0;
-  assign mem_we      = 0;
-  assign mem_address = 32'h00000000;
-  assign mem_wr_data = 32'h00000000;
+  assign mem_cs      = tmp_mem_cs;
+  assign mem_we      = tmp_mem_we;
+  assign mem_address = tmp_mem_address;
+  assign mem_wr_data = tmp_mem_wr_data;
 
   assign opcode       = instruction_reg[31 : 26];
-  assign dest_addr    = instruction_reg[25 : 21];
+  assign dst_addr     = instruction_reg[25 : 21];
   assign source0_addr = instruction_reg[20 : 16];
   assign source1_addr = instruction_reg[15 : 11];
   assign constant     = instruction_reg[15 : 00];
@@ -183,9 +189,9 @@ module fltcpu(
                          .src1_addr(source1_addr),
                          .src1_data(source1_data),
 
-                         .dst_we(dest_we),
-                         .dst_addr(dest_addr),
-                         .dst_data(dest_data),
+                         .dst_we(dst_we),
+                         .dst_addr(dst_addr),
+                         .dst_wr_data(dst_wr_data),
 
                          .zero_flag(zero_flag),
 
@@ -202,7 +208,7 @@ module fltcpu(
 
                  .src0_data(source0_data),
                  .src1_data(source1_data),
-                 .dst_data(dest_data),
+                 .dst_data(dst_wr_data),
 
                  .eq_data(eq_data)
                 );
@@ -282,17 +288,17 @@ module fltcpu(
 
         OP_CMP, OP_CMPI:
           begin
-            intr_type = ITYPE_REG_REG;
+            instr_type = ITYPE_REG_REG;
           end
 
         OP_RD, OP_RDI, OP_RDC:
           begin
-            intr_type = ITYPE_MEM_RD;
+            instr_type = ITYPE_MEM_RD;
           end
 
-        OP_WR. OP_WRI:
+        OP_WR, OP_WRI:
           begin
-            intr_type = ITYPE_MEM_WR;
+            instr_type = ITYPE_MEM_WR;
           end
 
         OP_BEQ, OP_BEQI, OP_BNEI:
@@ -301,7 +307,7 @@ module fltcpu(
 
         OP_JSR, OP_JSRI, OP_JMP, OP_JMPI, OP_RTS:
           begin
-            intr_type = ITYPE_MEM_JMP;
+            instr_type = ITYPE_MEM_JMP;
           end
 
         default:
@@ -322,16 +328,13 @@ module fltcpu(
   //----------------------------------------------------------------
   always @*
     begin : fltcpu_ctrl
-      dest_we         = 0;
+      dst_we          = 0;
       instruction_we  = 0;
-      carry_we        = 0;
-      zero_we         = 0;
-      eq_we           = 0;
       inc_pc          = 0;
       ret_pc          = 0;
-      mem_cs          = 0;
-      mem_we          = 0;
-      mem_address     = 0;
+      tmp_mem_cs      = 0;
+      tmp_mem_we      = 0;
+      tmp_mem_address = 0;
       fltcpu_ctrl_new = CTRL_IDLE;
       fltcpu_ctrl_we  = 0;
 
@@ -344,16 +347,16 @@ module fltcpu(
 
         CTRL_INSTR_READ:
           begin
-            mem_cs          = 1;
-            mem_address     = MEM_PC;
+            tmp_mem_cs      = 1;
+            tmp_mem_address = pc;
             fltcpu_ctrl_new = CTRL_INSTR_WAIT;
             fltcpu_ctrl_we  = 1;
           end
 
         CTRL_INSTR_WAIT:
           begin
-            mem_cs          = 1;
-            mem_address     = MEM_PC;
+            tmp_mem_cs      = 1;
+            tmp_mem_address = pc;
             fltcpu_ctrl_new = CTRL_INSTR_STORE;
             fltcpu_ctrl_we  = 1;
           end
