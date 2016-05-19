@@ -40,8 +40,9 @@ SRC_DIR=../src/rtl
 CPU_SRC=$(SRC_DIR)/fltcpu.v $(SRC_DIR)/fltcpu_regfile.v $(SRC_DIR)/fltcpu_alu.v
 CPU_TOP=fltcpu
 
+
 CC=iverilog
-LINT=verilator --lint-only
+LINT=verilator --lint-only -Wall -Wno-fatal -Wno-DECLFILENAME
 
 all: cpu
 
@@ -52,7 +53,6 @@ cpu: $(CPU_SRC)
 
 lint: $(CPU_SRC)
 	$(LINT) --top-module $(CPU_TOP) $(CPU_SRC)
-
 
 clean:
 	rm -f cpu.sim
