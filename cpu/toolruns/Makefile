@@ -38,7 +38,8 @@
 
 SRC_DIR=../src/rtl
 CPU_SRC=$(SRC_DIR)/fltcpu.v $(SRC_DIR)/fltcpu_regfile.v $(SRC_DIR)/fltcpu_alu.v
-CPU_TOP=fltcpu
+CPU_TB=../src/tb/tb_fltcpu.v
+PU_TOP=fltcpu
 
 
 CC=iverilog
@@ -47,8 +48,8 @@ LINT=verilator --lint-only -Wall -Wno-fatal -Wno-DECLFILENAME
 all: cpu
 
 
-cpu: $(CPU_SRC)
-	$(CC) -o cpu.sim $(CPU_SRC)
+cpu:	$(CPU_TB) $(CPU_SRC)
+	$(CC) -o cpu.sim $(CPU_TB) $(CPU_SRC)
 
 
 lint: $(CPU_SRC)
@@ -62,6 +63,7 @@ help:
 	@echo "Supported targets:"
 	@echo "------------------"
 	@echo "cpu:      Build cpu simulation targets."
+	@echo "lint:     Lint the CPU source."
 	@echo "clean:    Delete all built files."
 
 #===================================================================

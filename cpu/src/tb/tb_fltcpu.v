@@ -45,11 +45,16 @@
 //------------------------------------------------------------------
 // Test module.
 //------------------------------------------------------------------
-module tb_sha256y();
+module tb_fltcpu();
 
   //----------------------------------------------------------------
   // Internal constant and parameter definitions.
   //----------------------------------------------------------------
+  parameter CLK_HALF_PERIOD = 1;
+  parameter CLK_PERIOD = CLK_HALF_PERIOD * 2;
+
+  parameter DEBUG_CORE = 0;
+  parameter DEBUG_TOP  = 0;
 
 
   //----------------------------------------------------------------
@@ -73,13 +78,13 @@ module tb_sha256y();
   //----------------------------------------------------------------
   fltcpu dut(
              .clk(tb_clk),
-             .reset_(tb_reset_n),
+             .reset_n(tb_reset_n),
 
              .mem_cs(tb_mem_cs),
              .mem_we(tb_mem_we),
-             .mem_address(tb_address),
-             .mem_rd_data(tb_rd_data,
-             .mem_wr_data(tb_wr_data)
+             .mem_address(tb_mem_address),
+             .mem_rd_data(tb_mem_rd_data),
+             .mem_wr_data(tb_mem_wr_data)
             );
 
 
