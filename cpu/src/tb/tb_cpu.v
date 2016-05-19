@@ -61,11 +61,26 @@ module tb_sha256y();
 
   reg           tb_clk;
   reg           tb_reset_n;
+  wire          tb_mem_cs;
+  wire [3 : 0]  tb_mem_we;
+  wire [31 : 0] tb_mem_address;
+  reg  [31 : 0] tb_mem_rd_data;
+  wire [31 : 0] tb_mem_wr_data;
 
 
   //----------------------------------------------------------------
   // Device Under Test.
   //----------------------------------------------------------------
+  fltcpu dut(
+             .clk(tb_clk),
+             .reset_(tb_reset_n),
+
+             .mem_cs(tb_mem_cs),
+             .mem_we(tb_mem_we),
+             .mem_address(tb_address),
+             .mem_rd_data(tb_rd_data,
+             .mem_wr_data(tb_wr_data)
+            );
 
 
   //----------------------------------------------------------------
