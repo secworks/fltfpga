@@ -7,9 +7,9 @@ is the fun with that?
 
 Anyway, the CPU is a 32-bit CPU with a very limited instruction set. The
 machines has a shared code and data memory to allow dynamic/self
-modifying code, use data as code and other fun things. I/O including
-is memory mapped too. Oh and the program counter (PC) and return address
-(RET) are of course normal registers so one can manipulate the PC and
+modifying code, use data as code and other fun things. I/O is memory
+mapped too. Oh and the program counter (PC) and return address (RET) are
+of course normal registers so one can manipulate the PC and
 RET from SW. Running code backwards by shifting the PC? Jumping by
 setting RET and do a RTS? Should be doable.
 
@@ -22,20 +22,22 @@ The first version of the machine will only support integer arithmetic.
 ## Architecture ##
 - Endianness:    Big endian, 32-bit data words.
 - Address space: At least 24 bits. Word oriented.
-- Registers:     32 or 64 registers, 32 bits wide.
-- Opcodes:       Max 64 opcodes.
+- Registers:     32 registers, 32 bits wide.
+- Opcodes:       Max 64 opcodes. Should reduce to 32.
 - Instructions:  Always a single word (32 bits)
 - Execution:     Single scalar, in order and variable number of cycles. No delay slots or API visible pipeline artifacts.
-- Status:        Separate register.
+- Status:        Separate register. Can be written to set/clear.
 
 
 ## Register map ##
-32 registers in total. All registers are directly writable by SW. This means that one can easily jump, change status regs, manipulate return addresses.
+32 registers in total. All registers are directly writable by SW. This
+means that one can easily jump, change status regs, manipulate return
+addresses.
 
 - r00: Zero registers (ZERO). Will always return zero.
-- r01..r28: General registers (GP01..GP28).
+- r01..r28: General registers (gp01 .. gp28).
 - r29: status register (STATUS). (zero, carry, equal etc...) Not a complete register. Only the specified bits are actually there.
-- r30: return address (RET). Is actually a Top Of Stack (TOS) element. JSR pushes. RTS pops. Any other writes just updates the TOS.
+- r30: return address (RET). Is actually a Top Of Stack (TOS) element.
 - r31: program counter (PC).
 
 
@@ -66,7 +68,6 @@ Where in the instruction the fields are:
 | opcode   | Mnemonic   | Description   | Registers   | Flags   |
 |:--------:|:----------:|-------------------------------------------|:-----------:|:-------:|
 | 0x00     | BRK        | Break. Do nothing and do not increase PC.   | |   |
-| 0x01     | NOP        | Do nothing but increase PC.   | PC ||
 | 0x02     | EXE        | Execute the contents of src as the next instruction. If the instruction does not update PC it will be incremented to next instruction. | PC ||
 |          |            ||||
 | 0x04     | AND        | AND src0 and src1, store result in dst.   | dst | zero |
@@ -95,7 +96,6 @@ Where in the instruction the fields are:
 | 0x22     | RDC        | Read given constant, zero extended value into dst. | dst ||
 | 0x28     | WR         | Write contents of src0 to address given by dst. Which bytes are written is controlled by src1 one-hot encoded. |||
 | 0x29     | WRI        | Write contents of src0 to address given by dst added with constant. Note that this will only write the full word. |||
-| 0x2a     | MV         | Move contents in src0 to dst.   | dst ||
 |          |            ||||
 | 0x30     | CMP        | Compare contents of src0 with src1. Update eq flag. || eq |
 | 0x31     | CMPI       | Compare contents of register src0 with zero extented constant. Update eq flag. || eq |
@@ -110,7 +110,22 @@ Where in the instruction the fields are:
 | 0x3f     | RTS        | Return from subroutine using stored return address. Updates PC. | pc ||
 |          |            ||||
 
-In total: 37 instructions out of a maximum of 64.
+In total: 36 instructions out of a maximum of 64.
+
+
+## Details ##
+
+### JSR, RTS and return address handling ###
+The return address register r30 is really the top of a stack. Or more
+correctly, the value in the register is what is stored in the descriptor
+ring register pointed to by the ring pointer. A jsr will move (increase)
+the pointer and store the PC in the register the pointer now selects. A
+RTS instruction copies the value of the register and the decreases the
+pointer. The pointer itself is part of the status register r29. This
+means that one can actually move the pointer without performing JSR or
+RTS operations.
+
+The size of the descriptor is 32 registers.
 
 
 ## TODO ##
@@ -120,13 +135,7 @@ In total: 37 instructions out of a maximum of 64.
 
 ## Functions to consider ##
 - Autoindex, Auto increment of registers
-- DMA
-- DSP, MAC
-- Floating points
 - Byte, word read and write.
-- Implicit or explicit stacks
-- Implicit or explicit return address
-- Implicit pc stack
 
 
 ## Test/Examples ##
