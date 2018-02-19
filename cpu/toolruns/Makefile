@@ -41,22 +41,26 @@ CPU_SRC=$(SRC_DIR)/fltcpu.v $(SRC_DIR)/fltcpu_regfile.v $(SRC_DIR)/fltcpu_alu.v
 CPU_TB=../src/tb/tb_fltcpu.v
 PU_TOP=fltcpu
 
+CC = iverilog
+CC_FLAGS = -Wall
 
-CC=iverilog
-LINT=verilator --lint-only -Wall -Wno-fatal -Wno-DECLFILENAME
-
-all: cpu
+LINT = verilator
+LINT_FLAGS = +1364-2001ext+ --lint-only -Wall -Wno-fatal -Wno-DECLFILENAME
 
 
-cpu:	$(CPU_TB) $(CPU_SRC)
-	$(CC) -o cpu.sim $(CPU_TB) $(CPU_SRC)
+all: cpu.sim
+
+
+cpu.sim: $(CPU_TB) $(CPU_SRC)
+	$(CC) $(CC_FLAGS) -o cpu.sim $(CPU_TB) $(CPU_SRC)
 
 
 lint: $(CPU_SRC)
-	$(LINT) --top-module $(CPU_TOP) $(CPU_SRC)
+	$(LINT) $(LINT_FLAGS) $(CPU_TOP) $(CPU_SRC)
+
 
 clean:
-	rm -f cpu.sim
+	rm -f *.sim
 
 
 help:
