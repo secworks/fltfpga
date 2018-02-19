@@ -20,13 +20,13 @@ The first version of the machine will only support integer arithmetic.
 
 
 ## Architecture ##
-- Endianness:    Big endian, 32-bit data words.
-- Address space: At least 24 bits. Word oriented.
-- Registers:     32 registers, 32 bits wide.
-- Opcodes:       Max 64 opcodes. Should reduce to 32.
-- Instructions:  Always a single word (32 bits)
-- Execution:     Single scalar, in order and variable number of cycles. No delay slots or API visible pipeline artifacts.
-- Status:        Separate register. Can be written to set/clear.
+- Endianness:     Big endian, 32-bit data words.
+- Address space:  At least 24 bits. Word oriented.
+- Registers:      32 registers, 32 bits wide.
+- Opcodes:        Max 64 opcodes. Should reduce to 32.
+- Instructions:   Always a single word (32 bits)
+- Execution:      Single scalar, in order and variable number of cycles. No delay slots or API visible pipeline artifacts.
+- Status/Control: Status flags and control bits. Can be written to set/clear.
 
 
 ## Register map ##
@@ -68,7 +68,7 @@ Where in the instruction the fields are:
 | opcode   | Mnemonic   | Description   | Registers   | Flags   |
 |:--------:|:----------:|-------------------------------------------|:-----------:|:-------:|
 | 0x00     | BRK        | Break. Do nothing and do not increase PC.   | |   |
-| 0x02     | EXE        | Execute the contents of src as the next instruction. If the instruction does not update PC it will be incremented to next instruction. | PC ||
+| 0x02     | EXE        | Execute the contents of src as the next instruction. | PC ||
 |          |            ||||
 | 0x04     | AND        | AND src0 and src1, store result in dst.   | dst | zero |
 | 0x05     | OR         | Inclusive OR src0 and src1, store result in dst.   | dst | zero |
@@ -121,11 +121,40 @@ correctly, the value in the register is what is stored in the descriptor
 ring register pointed to by the ring pointer. A jsr will move (increase)
 the pointer and store the PC in the register the pointer now selects. A
 RTS instruction copies the value of the register and the decreases the
-pointer. The pointer itself is part of the status register r29. This
-means that one can actually move the pointer without performing JSR or
-RTS operations.
+pointer. The pointer itself is part of the status/control register
+r29. This means that one can actually move the pointer without
+performing JSR or RTS operations.
 
 The size of the descriptor is 32 registers.
+
+
+### The EXE instruction ###
+Since we really want to allow weird tricks to be possible, we have added
+the ability to use the contents of a register as an instruction.
+
+When the EXE instruction issued, the contents of the register poiinted
+to by the instruction is used as the next instruction instead of the
+contents of the memory address pointed to by the PC.
+
+If the instruction given by the contents of the register doesn't update
+the PC, the next instruction will be what is currently in the memory
+pointed to by the PC. So basically the EXE instruction will be a double
+instruction - the exe instruction itself, and the instruction given by
+the contents of the register.
+
+If the contents of the register is not an instruction, that is it
+contains a valid opcode, the CPU will either silently ignore to execute
+the instruction, or raise an exception. Which method to be used is given
+by the dbg status/control bit.
+
+
+### The status/control register r29 ##
+The flags and control bits we want to expose.
+
+- return address descriptot pointer. 5 bits
+- eq 1 bit
+- dbg 1 bit.
+- zero
 
 
 ## TODO ##
