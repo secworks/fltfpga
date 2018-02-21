@@ -99,7 +99,7 @@ module fltcpu_alu(
   always @*
     begin : alu
       // Default assignments
-      tmp_dst_data = 32'h00000000;
+      tmp_dst_data = 32'h0;
       tmp_eq_data  = 0;
 
       case (opcode)

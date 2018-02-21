@@ -220,11 +220,11 @@ module fltcpu(
   // All registers are positive edge triggered with asynchronous
   // active low reset.
   //----------------------------------------------------------------
-  always @ (posedge clk or negedge reset_n)
+  always @ (posedge clk)
     begin
       if (!reset_n)
         begin
-          instruction_reg <= 32'h00000000;
+          instruction_reg <= 32'h0;
           fltcpu_ctrl_reg <= CTRL_IDLE;
         end
       else

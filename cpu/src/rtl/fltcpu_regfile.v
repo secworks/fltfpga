@@ -123,53 +123,16 @@ module fltcpu_regfile(
   // active low reset.
   //----------------------------------------------------------------
   always @ (posedge clk or negedge reset_n)
-    begin
+    begin : reg_update
+      integer i;
       if (!reset_n)
         begin
-          gp_reg[00]  <= 32'h00000000;
-          gp_reg[01]  <= 32'h00000000;
-          gp_reg[02]  <= 32'h00000000;
-          gp_reg[03]  <= 32'h00000000;
-          gp_reg[04]  <= 32'h00000000;
-          gp_reg[05]  <= 32'h00000000;
-          gp_reg[06]  <= 32'h00000000;
-          gp_reg[07]  <= 32'h00000000;
-          gp_reg[08]  <= 32'h00000000;
-          gp_reg[09]  <= 32'h00000000;
-          gp_reg[10]  <= 32'h00000000;
-          gp_reg[11]  <= 32'h00000000;
-          gp_reg[12]  <= 32'h00000000;
-          gp_reg[13]  <= 32'h00000000;
-          gp_reg[14]  <= 32'h00000000;
-          gp_reg[15]  <= 32'h00000000;
-          gp_reg[16]  <= 32'h00000000;
-          gp_reg[17]  <= 32'h00000000;
-          gp_reg[18]  <= 32'h00000000;
-          gp_reg[19]  <= 32'h00000000;
-          gp_reg[20]  <= 32'h00000000;
-          gp_reg[21]  <= 32'h00000000;
-          gp_reg[22]  <= 32'h00000000;
-          gp_reg[23]  <= 32'h00000000;
-          gp_reg[24]  <= 32'h00000000;
-          gp_reg[25]  <= 32'h00000000;
-          gp_reg[26]  <= 32'h00000000;
-          gp_reg[27]  <= 32'h00000000;
-          ret_reg[00] <= 32'h00000000;
-          ret_reg[01] <= 32'h00000000;
-          ret_reg[02] <= 32'h00000000;
-          ret_reg[03] <= 32'h00000000;
-          ret_reg[04] <= 32'h00000000;
-          ret_reg[05] <= 32'h00000000;
-          ret_reg[06] <= 32'h00000000;
-          ret_reg[07] <= 32'h00000000;
-          ret_reg[08] <= 32'h00000000;
-          ret_reg[09] <= 32'h00000000;
-          ret_reg[10] <= 32'h00000000;
-          ret_reg[11] <= 32'h00000000;
-          ret_reg[12] <= 32'h00000000;
-          ret_reg[13] <= 32'h00000000;
-          ret_reg[14] <= 32'h00000000;
-          ret_reg[15] <= 32'h00000000;
+          for (i = 0 ; i < 28 ; i = i + 1)
+            gp_reg[i]  <= 32'h0;
+
+          for (i = 0 ; i < 16 ; i = i + 1)
+            ret_reg[i] <= 32'h0;
+
           ret_ptr_reg <= 4'h0;
           pc_reg      <= BOOT_VECTOR;
         end
@@ -198,7 +161,7 @@ module fltcpu_regfile(
   always @*
     begin : read_src0
       if (src0_addr == 0)
-        tmp_src0_data = 32'h00000000;
+        tmp_src0_data = 32'h0;
 
       if (0 < src0_addr < 29)
         tmp_src0_data = gp_reg[(src0_addr - 1)];
@@ -222,7 +185,7 @@ module fltcpu_regfile(
   always @*
     begin : read_src1
       if (src1_addr == 0)
-        tmp_src1_data = 32'h00000000;
+        tmp_src1_data = 32'h0;
 
       if (0 < src1_addr < 29)
         tmp_src1_data = gp_reg[(src1_addr - 1)];
@@ -246,7 +209,7 @@ module fltcpu_regfile(
   always @*
     begin : read_dst
       if (dst_addr == 0)
-        tmp_dst_rd_data = 32'h00000000;
+        tmp_dst_rd_data = 32'h0;
 
       if (0 < dst_addr < 29)
         tmp_dst_rd_data = gp_reg[(src1_addr - 1)];
@@ -273,9 +236,9 @@ module fltcpu_regfile(
     begin : pc_update
       return_we = 0;
       gp_we     = 0;
-      pc_new    = 32'h00000000;
+      pc_new    = 32'h0;
       pc_we     = 0;
-      ret_ptr_new = 32'h00000000;
+      ret_ptr_new = 32'h0;
       ret_ptr_we  = 0;
 
       if (dst_we && (dst_addr < 30))
